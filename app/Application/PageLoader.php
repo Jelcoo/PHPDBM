@@ -28,7 +28,7 @@ class PageLoader {
      * @param array $parameters
      * @return string
      */
-    public function render(array $parameters): string {
+    public function render(array $parameters = []): string {
         $layout = $this->loadView('layouts/'.$this->layout, $parameters);
         $page = $this->loadView('pages/'.$this->page, $parameters);
 
@@ -39,7 +39,7 @@ class PageLoader {
      * Load a view file and return its content
      * @param string $pageName
      */
-    private function loadView(string $pageName, array $parameters = []): string {
+    private function loadView(string $pageName, array $parameters): string {
         foreach ($parameters as $key => $value) {
             $$key = $value;
         }

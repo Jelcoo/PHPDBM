@@ -2,6 +2,8 @@
 
 namespace App\Application;
 
+use App\Controllers\ErrorController;
+
 class Router {
     private array $routes = [];
     public Request $request;
@@ -56,7 +58,7 @@ class Router {
         $callback = $this->routes[$method][$uri] ?? false;
         if ($callback === false) {
             $this->response->setStatusCode(404);
-            $this->response->setContent('404 Not Found');
+            $this->response->setContent((new ErrorController())->error404());
         } else {
             $callback[0] = new $callback[0]();
             $content = call_user_func($callback, $this->request, $this->response);
