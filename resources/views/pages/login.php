@@ -1,4 +1,4 @@
-<div class="h-100 d-flex align-items-center py-4 bg-body-tertiary">
+<div class="d-flex align-items-center py-4">
     <main class="form-signin w-100 m-auto">
         <form>
             <h1 class="h3 mb-3 fw-normal">Please sign in</h1>

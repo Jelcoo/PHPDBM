@@ -55,8 +55,8 @@ class Router {
     {
         $uri = $this->request->getPath();
         $method = $this->request->getMethod();
-        $callback = $this->routes[$method][$uri] ?? false;
-        if ($callback === false) {
+        $callback = $this->routes[$method][$uri] ?? null;
+        if (is_null($callback)) {
             $this->response->setStatusCode(404);
             $this->response->setContent((new ErrorController())->error404());
         } else {

@@ -14,6 +14,7 @@ class PageLoader {
         $this->layout = $layoutName;
         return $this;
     }
+
     /**
      * Set view rendered on the webpage
      * @param string $pageName
