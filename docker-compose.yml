@@ -7,13 +7,13 @@ services:
             - "80:80"
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf
-            - ./app:/app
+            - ./:/app
     php:
         build:
             context: .
             dockerfile: PHP.Dockerfile
         volumes:
-            - ./app:/app
+            - ./:/app
     mysql:
         image: mariadb:latest
         environment:

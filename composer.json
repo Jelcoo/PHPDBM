@@ -1,0 +1,23 @@
+{
+    "name": "jelcoo/phpdbm",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Jelcoo"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.64"
+    },
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan",
+        "phpcs:check": "vendor/bin/php-cs-fixer fix --verbose --dry-run --diff",
+        "phpcs:fix": "vendor/bin/php-cs-fixer fix"
+    }
+}

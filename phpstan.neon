@@ -1,0 +1,7 @@
+parameters:
+    paths:
+        - app/
+        - bootstrap/
+        - routes/
+        - public/
+    level: 8
