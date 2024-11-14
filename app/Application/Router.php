@@ -4,7 +4,8 @@ namespace App\Application;
 
 use App\Controllers\ErrorController;
 
-class Router {
+class Router
+{
     private array $routes = [];
     public Request $request;
     public Response $response;
@@ -16,42 +17,32 @@ class Router {
     }
 
     private static Router $router;
+
     public static function getInstance(): Router
     {
         if (!isset(self::$router)) {
             self::$router = new Router();
         }
+
         return self::$router;
     }
 
-    /**
-     * @param string $uri
-     * @param array $callback
-     */
     public function get(string $uri, array $callback): void
     {
         $this->routes['GET'][$uri] = $callback;
     }
 
-    /**
-     * @param string $uri
-     * @param array $callback
-     */
     public function post(string $uri, array $callback): void
     {
         $this->routes['POST'][$uri] = $callback;
     }
 
-    /**
-     * @param string $uri
-     * @param array $callback
-     */
     public function delete(string $uri, array $callback): void
     {
         $this->routes['DELETE'][$uri] = $callback;
     }
 
-    public function resolve()
+    public function resolve(): void
     {
         $uri = $this->request->getPath();
         $method = $this->request->getMethod();

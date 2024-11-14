@@ -2,9 +2,8 @@
 
 namespace App\Application;
 
-use App\Application\Router;
-
-class Application {
+class Application
+{
     private static Application $application;
 
     public static function getInstance(): Application
@@ -12,6 +11,7 @@ class Application {
         if (!isset(self::$application)) {
             self::$application = new Application();
         }
+
         return self::$application;
     }
 

@@ -4,7 +4,8 @@ namespace App\Controllers;
 
 use App\Application\PageLoader;
 
-class Controller {
+class Controller
+{
     protected PageLoader $pageLoader;
 
     public function __construct()

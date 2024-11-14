@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Application\Application;
 use App\Application\Router;
+use App\Application\Application;
 
 $app = Application::getInstance();
 $router = Router::getInstance();
