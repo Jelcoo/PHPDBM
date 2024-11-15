@@ -6,6 +6,7 @@ class Config
 {
     public static function getKey(string $key): string
     {
-        return $_ENV[$key] ?? '';
+        $config = require __DIR__ . '/../../config.php';
+        return $config[$key] ?? '';
     }
 }

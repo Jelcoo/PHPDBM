@@ -15,6 +15,10 @@
         "phpstan/phpstan": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.64"
     },
+    "require": {
+        "ext-pdo_mysql": "*",
+        "ext-pdo": "*"
+    },
     "scripts": {
         "phpstan": "vendor/bin/phpstan",
         "phpcs:check": "vendor/bin/php-cs-fixer fix --verbose --dry-run --diff",
