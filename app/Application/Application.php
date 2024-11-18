@@ -2,9 +2,6 @@
 
 namespace App\Application;
 
-use PDO;
-use App\Config\Config;
-
 class Application
 {
     private static Application $application;

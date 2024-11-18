@@ -11,6 +11,6 @@ class LoginController extends Controller
 
     public function login(): string
     {
-        return "";
+        return '';
     }
 }

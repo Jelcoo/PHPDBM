@@ -2,12 +2,11 @@
 
 namespace App\Database;
 
-use PDO;
 use App\Config\Config;
 
 class Database
 {
-    private PDO $pdo;
+    private \PDO $pdo;
 
     public function __construct()
     {
@@ -25,16 +24,16 @@ class Database
         return self::$database;
     }
 
-    private function getPDO(): PDO
+    private function getPDO(): \PDO
     {
         if (isset($this->pdo)) {
             return $this->pdo;
         }
 
         $options = [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false,
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+            \PDO::ATTR_EMULATE_PREPARES => false,
         ];
 
         $hostname = Config::getKey('DB_HOST');
@@ -45,10 +44,11 @@ class Database
         $charset = 'utf8mb4';
         $dsn = "mysql:host=$hostname;port=$port;dbname=$db;charset=$charset";
         try {
-            $_pdo = new PDO($dsn, $user, $password, $options);
+            $_pdo = new \PDO($dsn, $user, $password, $options);
         } catch (\PDOException $e) {
-            throw new \PDOException($e->getMessage(), (int)$e->getCode());
+            throw new \PDOException($e->getMessage(), (int) $e->getCode());
         }
+
         return $_pdo;
     }
 }
