@@ -8,4 +8,9 @@ class LoginController extends Controller
     {
         return $this->pageLoader->setPage('login')->render();
     }
+
+    public function login(): string
+    {
+        return "";
+    }
 }
