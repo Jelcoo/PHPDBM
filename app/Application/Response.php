@@ -22,4 +22,9 @@ class Response
         http_response_code($this->statusCode);
         echo $this->content;
     }
+
+    public static function redirect(string $url): void
+    {
+        header('Location: ' . $url);
+    }
 }

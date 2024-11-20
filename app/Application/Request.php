@@ -20,6 +20,11 @@ class Request
         return strtoupper($_SERVER['REQUEST_METHOD']);
     }
 
+    public static function getPostField(string $name): string
+    {
+        return $_POST[$name] ?? '';
+    }
+
     public static function getSession(): array
     {
         return $_SESSION ?? [];
