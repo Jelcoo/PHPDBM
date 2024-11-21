@@ -47,12 +47,10 @@ class LoginController extends Controller
         return null;
     }
 
-    public function logout(): string
+    public function logout(): void
     {
         Session::destroy();
-        return $this->rerender([
-            'success' => 'You have been logged out'
-        ]);
+        Response::redirect('/login');
     }
 
     private function rerender(array $parameters = []): string
