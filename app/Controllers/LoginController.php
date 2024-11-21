@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Application\Request;
 use App\Application\Response;
+use App\Application\Session;
 use App\Database\Database;
 
 class LoginController extends Controller
@@ -44,6 +45,14 @@ class LoginController extends Controller
         }
 
         return null;
+    }
+
+    public function logout(): string
+    {
+        Session::destroy();
+        return $this->rerender([
+            'success' => 'You have been logged out'
+        ]);
     }
 
     private function rerender(array $parameters = []): string

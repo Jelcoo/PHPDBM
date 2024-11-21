@@ -3,6 +3,8 @@
         <?php
         if (isset($error)) {
             echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
+        } else if (isset($success)) {
+            echo '<div class="alert alert-success" role="alert">' . $success . '</div>';
         }
         ?>
         <form action="/login" method="POST">

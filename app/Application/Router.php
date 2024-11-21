@@ -3,10 +3,12 @@
 namespace App\Application;
 
 use App\Controllers\ErrorController;
+use App\Models\Route;
 
 class Router
 {
     private array $routes = [];
+    private mixed $currentMiddleware = null;
     public Request $request;
     public Response $response;
 
@@ -29,40 +31,53 @@ class Router
 
     public function get(string $uri, array $callback): void
     {
-        $this->routes['GET'][$uri] = $callback;
+        $this->routes[] = $this->constructRoute($uri, 'GET', $callback);
     }
 
     public function post(string $uri, array $callback): void
     {
-        $this->routes['POST'][$uri] = $callback;
+        $this->routes[] = $this->constructRoute($uri, 'POST', $callback);
     }
 
     public function delete(string $uri, array $callback): void
     {
-        $this->routes['DELETE'][$uri] = $callback;
+        $this->routes[] = $this->constructRoute($uri, 'DELETE', $callback);
+    }
+
+    public function middleware(mixed $middleware, callable $register): void
+    {
+        $this->currentMiddleware = new $middleware();
+        $register();
+        $this->currentMiddleware = null;
     }
 
     public function resolve(): void
     {
         $uri = $this->request->getPath();
         $method = $this->request->getMethod();
-        $callback = $this->routes[$method][$uri] ?? null;
-        if (is_null($callback)) {
+        $route = $this->resolveRoute($uri, $method);
+        if (is_null($route) || !$route->executeMiddleware()) {
             $this->response->setStatusCode(404);
             $this->response->setContent((new ErrorController())->error404());
         } else {
-            $callback[0] = new $callback[0]();
-            $content = call_user_func($callback, $this->request, $this->response);
+            $route->callback[0] = new $route->callback[0]();
+            $content = call_user_func($route->callback, $this->request, $this->response);
             $this->response->setContent($content);
         }
 
         $this->response->send();
     }
 
-    public function middleware(mixed $middleware, callable $register): void
+    private function resolveRoute(string $uri, string $method): Route|null
     {
-        if ((new $middleware())->verify()) {
-            $register();
-        }
+        $routes = array_filter($this->routes, function($route) use ($uri, $method): bool {
+            return $route->uri === $uri && $route->method === $method;
+        });
+        return !empty($routes) ? current($routes) : null;
+    }
+
+    private function constructRoute(string $uri, string $method, array $callback): Route
+    {
+        return new Route($uri, $method, $callback, $this->currentMiddleware);
     }
 }

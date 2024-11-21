@@ -1,3 +1,10 @@
+<?php
+
+use App\Application\Session;
+
+$loggedIn = Session::isValidSession();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -22,7 +29,11 @@
 
             <ul class="nav nav-pills">
                 <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
-                <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+                <?php if ($loggedIn): ?>
+                    <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+                <?php else: ?>
+                    <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+                <?php endif; ?>
             </ul>
             </header>
         </div>

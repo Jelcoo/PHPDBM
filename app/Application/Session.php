@@ -9,7 +9,7 @@ class Session
         return isset($_SESSION['ip_address'], $_SESSION['port'], $_SESSION['username'], $_SESSION['password']);
     }
 
-    public function destroy(): void
+    public static function destroy(): void
     {
         session_destroy();
     }
