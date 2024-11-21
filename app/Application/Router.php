@@ -2,8 +2,8 @@
 
 namespace App\Application;
 
-use App\Controllers\ErrorController;
 use App\Models\Route;
+use App\Controllers\ErrorController;
 
 class Router
 {
@@ -68,11 +68,12 @@ class Router
         $this->response->send();
     }
 
-    private function resolveRoute(string $uri, string $method): Route|null
+    private function resolveRoute(string $uri, string $method): ?Route
     {
-        $routes = array_filter($this->routes, function($route) use ($uri, $method): bool {
+        $routes = array_filter($this->routes, function ($route) use ($uri, $method): bool {
             return $route->uri === $uri && $route->method === $method;
         });
+
         return !empty($routes) ? current($routes) : null;
     }
 

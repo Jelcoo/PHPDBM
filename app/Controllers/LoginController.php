@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Application\Request;
-use App\Application\Response;
-use App\Application\Session;
 use App\Database\Database;
+use App\Application\Request;
+use App\Application\Session;
+use App\Application\Response;
 
 class LoginController extends Controller
 {
@@ -14,7 +14,7 @@ class LoginController extends Controller
         return $this->pageLoader->setPage('login')->render();
     }
 
-    public function login(): string|null
+    public function login(): ?string
     {
         $ipAddress = Request::getPostField('ip_address');
         $port = Request::getPostField('port');
@@ -24,7 +24,7 @@ class LoginController extends Controller
         if (empty($ipAddress) || empty($port) || empty($username) || empty($password)) {
             return $this->rerender([
                 'error' => 'All fields are required',
-                'fields' => $_POST
+                'fields' => $_POST,
             ]);
         }
 
@@ -40,7 +40,7 @@ class LoginController extends Controller
         } catch (\Exception $e) {
             return $this->rerender([
                 'error' => $e->getMessage(),
-                'fields' => $_POST
+                'fields' => $_POST,
             ]);
         }
 

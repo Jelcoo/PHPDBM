@@ -11,19 +11,22 @@ class Route
     public array $callback;
     public array $middleware;
 
-    public function __construct(string $uri, string $method, array $callback, Middleware $middleware = null) {
+    public function __construct(string $uri, string $method, array $callback, ?Middleware $middleware = null)
+    {
         $this->uri = $uri;
         $this->method = $method;
         $this->callback = $callback;
         $this->middleware = $middleware ? [$middleware] : [];
     }
 
-    public function executeMiddleware(): bool {
+    public function executeMiddleware(): bool
+    {
         foreach ($this->middleware as $middleware) {
             if (!$middleware->verify()) {
                 return false;
             }
         }
+
         return true;
     }
 }

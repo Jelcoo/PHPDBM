@@ -3,7 +3,7 @@
         <?php
         if (isset($error)) {
             echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
-        } else if (isset($success)) {
+        } elseif (isset($success)) {
             echo '<div class="alert alert-success" role="alert">' . $success . '</div>';
         }
         ?>
@@ -12,15 +12,15 @@
             <p class="text-body-secondary">Please sign in with the credentials of your database</p>
 
             <div class="form-floating my-1">
-                <input type="text" class="form-control" name="ip_address" placeholder="IP address" <?= isset($fields['ip_address']) ? 'value="' . $fields['ip_address'] . '"' : '' ?>>
+                <input type="text" class="form-control" name="ip_address" placeholder="IP address" <?php echo isset($fields['ip_address']) ? 'value="' . $fields['ip_address'] . '"' : ''; ?>>
                 <label for="ip_address">IP address</label>
             </div>
             <div class="form-floating my-1">
-                <input type="number" class="form-control" name="port" value="3306" placeholder="Port" <?= isset($fields['port']) ? 'value="' . $fields['port'] . '"' : '' ?>>
+                <input type="number" class="form-control" name="port" value="3306" placeholder="Port" <?php echo isset($fields['port']) ? 'value="' . $fields['port'] . '"' : ''; ?>>
                 <label for="port">Port</label>
             </div>
             <div class="form-floating my-1">
-                <input type="text" class="form-control" name="username" placeholder="Username" <?= isset($fields['username']) ? 'value="' . $fields['username'] . '"' : '' ?>>
+                <input type="text" class="form-control" name="username" placeholder="Username" <?php echo isset($fields['username']) ? 'value="' . $fields['username'] . '"' : ''; ?>>
                 <label for="username">Username</label>
             </div>
             <div class="form-floating my-1">

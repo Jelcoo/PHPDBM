@@ -29,11 +29,11 @@ $loggedIn = Session::isValidSession();
 
             <ul class="nav nav-pills">
                 <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
-                <?php if ($loggedIn): ?>
+                <?php if ($loggedIn) { ?>
                     <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
-                <?php else: ?>
+                <?php } else { ?>
                     <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
-                <?php endif; ?>
+                <?php } ?>
             </ul>
             </header>
         </div>

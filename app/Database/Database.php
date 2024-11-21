@@ -2,15 +2,13 @@
 
 namespace App\Database;
 
-use App\Config\Config;
-
 class Database
 {
     private \PDO $pdoConnection;
-    private string $host = "";
-    private string $port = "";
-    private string $username = "";
-    private string $password = "";
+    private string $host = '';
+    private string $port = '';
+    private string $username = '';
+    private string $password = '';
 
     private static Database $database;
 
@@ -50,6 +48,7 @@ class Database
         ];
 
         $this->pdoConnection = new \PDO($dsn, $this->username, $this->password, $options);
+
         return $this->pdoConnection;
     }
 }

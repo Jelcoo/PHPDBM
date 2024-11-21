@@ -2,8 +2,8 @@
 
 namespace App\Middleware;
 
-use App\Application\Response;
 use App\Application\Session;
+use App\Application\Response;
 
 class EnsureLoggedIn implements Middleware
 {
