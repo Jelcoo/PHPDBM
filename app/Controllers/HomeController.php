@@ -6,6 +6,8 @@ class HomeController extends Controller
 {
     public function index(): string
     {
-        return $this->pageLoader->setPage('home')->render(['user' => 'John']);
+        $username = $_SESSION['username'];
+
+        return $this->pageLoader->setPage('home')->render(['user' => $username]);
     }
 }
