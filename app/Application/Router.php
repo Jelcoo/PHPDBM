@@ -58,4 +58,11 @@ class Router
 
         $this->response->send();
     }
+
+    public function middleware(mixed $middleware, callable $register): void
+    {
+        if ((new $middleware())->verify()) {
+            $register();
+        }
+    }
 }
