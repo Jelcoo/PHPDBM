@@ -10,6 +10,7 @@ class Route
     public string $method;
     public array $callback;
     public array $middleware;
+    public array $params = [];
 
     public function __construct(string $uri, string $method, array $callback, ?Middleware $middleware = null)
     {
@@ -19,10 +20,10 @@ class Route
         $this->middleware = $middleware ? [$middleware] : [];
     }
 
-    public function executeMiddleware(): bool
+    public function executeMiddleware(array $params = []): bool
     {
         foreach ($this->middleware as $middleware) {
-            if (!$middleware->verify()) {
+            if (!$middleware->verify($params)) {
                 return false;
             }
         }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Middleware\DatabaseExists;
 use App\Middleware\EnsureLoggedIn;
 use App\Middleware\EnsureNotLoggedIn;
 
@@ -14,4 +15,9 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
     $router->get('/', [App\Controllers\HomeController::class, 'index']);
 
     $router->get('/logout', [App\Controllers\LoginController::class, 'logout']);
+
+
+    $router->middleware(DatabaseExists::class, function () use ($router) {
+        $router->get('/database/{database}', [App\Controllers\DatabaseController::class, 'show']);
+    });
 });

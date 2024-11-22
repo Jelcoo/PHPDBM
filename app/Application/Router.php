@@ -56,12 +56,14 @@ class Router
         $uri = $this->request->getPath();
         $method = $this->request->getMethod();
         $route = $this->resolveRoute($uri, $method);
-        if (is_null($route) || !$route->executeMiddleware()) {
+
+        if (is_null($route) || !$route->executeMiddleware($route->params)) {
             $this->response->setStatusCode(404);
             $this->response->setContent((new ErrorController())->error404());
         } else {
             $route->callback[0] = new $route->callback[0]();
-            $content = call_user_func($route->callback, $this->request, $this->response);
+
+            $content = call_user_func_array($route->callback, [...$route->params]);
             $this->response->setContent($content);
         }
 
@@ -70,11 +72,20 @@ class Router
 
     private function resolveRoute(string $uri, string $method): ?Route
     {
-        $routes = array_filter($this->routes, function ($route) use ($uri, $method): bool {
-            return $route->uri === $uri && $route->method === $method;
-        });
+        foreach ($this->routes as $route) {
+            if ($route->method === $method) {
+                $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '([^\/]+)', $route->uri);
+                $pattern = '#^' . $pattern . '$#';
 
-        return !empty($routes) ? current($routes) : null;
+                if (preg_match($pattern, $uri, $matches)) {
+                    array_shift($matches);
+                    $route->params = $matches;
+                    return $route;
+                }
+            }
+        }
+
+        return null;
     }
 
     private function constructRoute(string $uri, string $method, array $callback): Route
