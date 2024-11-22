@@ -80,6 +80,7 @@ class Router
                 if (preg_match($pattern, $uri, $matches)) {
                     array_shift($matches);
                     $route->params = $matches;
+
                     return $route;
                 }
             }

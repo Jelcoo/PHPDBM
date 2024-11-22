@@ -1,4 +1,4 @@
-<h1><?= $databaseName ?></h1>
+<h1><?php echo $databaseName; ?></h1>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -7,11 +7,11 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($databaseTables as $table): ?>
+            <?php foreach ($databaseTables as $table) { ?>
                 <tr>
-                    <td><a href="/database/<?= $databaseName ?>/table/<?= $table ?>"><?= $table ?></a></td>
+                    <td><a href="/database/<?php echo $databaseName; ?>/table/<?php echo $table; ?>"><?php echo $table; ?></a></td>
                 </tr>
-            <?php endforeach; ?>
+            <?php } ?>
         </tbody>
     </table>
 </div>

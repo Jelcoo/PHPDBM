@@ -1,19 +1,19 @@
-<h1><?= $databaseName ?> - <?= $tableName ?></h1>
+<h1><?php echo $databaseName; ?> - <?php echo $tableName; ?></h1>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
-            <?php foreach ($tableColumns as $column): ?>
-                <th scope="col"><?= $column['Field'] ?></th>
-            <?php endforeach; ?>
+            <?php foreach ($tableColumns as $column) { ?>
+                <th scope="col"><?php echo $column['Field']; ?></th>
+            <?php } ?>
         </thead>
         <tbody>
-            <?php foreach ($tableRows['data'] as $row): ?>
+            <?php foreach ($tableRows['data'] as $row) { ?>
                 <tr>
-                    <?php foreach ($tableColumns as $column): ?>
-                        <td class="text-truncate"><?= $row[$column['Field']] ?></td>
-                    <?php endforeach; ?>
+                    <?php foreach ($tableColumns as $column) { ?>
+                        <td class="text-truncate"><?php echo $row[$column['Field']]; ?></td>
+                    <?php } ?>
                 </tr>
-            <?php endforeach; ?>
+            <?php } ?>
         </tbody>
     </table>
 </div>
@@ -22,13 +22,13 @@
         <li class="page-item">
             <a id="previous" class="page-link" href="#" tabindex="-1">Previous</a>
         </li>
-        <?php foreach (array_reverse($tableRows['pages']['previous']) as $i): ?>
-            <li class="page-item"><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
-        <?php endforeach; ?>
-        <li class="page-item"><a class="page-link" href="?page=<?= $tableRows['pages']['current'] ?>"><?= $tableRows['pages']['current'] ?></a></li>
-        <?php foreach ($tableRows['pages']['next'] as $i): ?>
-            <li class="page-item"><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
-        <?php endforeach; ?>
+        <?php foreach (array_reverse($tableRows['pages']['previous']) as $i) { ?>
+            <li class="page-item"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+        <?php } ?>
+        <li class="page-item"><a class="page-link" href="?page=<?php echo $tableRows['pages']['current']; ?>"><?php echo $tableRows['pages']['current']; ?></a></li>
+        <?php foreach ($tableRows['pages']['next'] as $i) { ?>
+            <li class="page-item"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+        <?php } ?>
         <li class="page-item">
             <a id="next" class="page-link" href="#">Next</a>
         </li>
@@ -36,8 +36,8 @@
 </nav>
 
 <script>
-    const lastPage = <?= $tableRows['pages']['total'] ?>;
-    const currentPage = <?= $tableRows['pages']['current'] ?>;
+    const lastPage = <?php echo $tableRows['pages']['total']; ?>;
+    const currentPage = <?php echo $tableRows['pages']['current']; ?>;
 
     const previousButton = document.getElementById('previous');
     const nextButton = document.getElementById('next');

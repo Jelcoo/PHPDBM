@@ -19,6 +19,7 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
         if (! $this->useDatabase($databaseName)) {
             return [];
         }
-        return $this->getConnection()->query("SHOW TABLES")->fetchAll(\PDO::FETCH_COLUMN);
+
+        return $this->getConnection()->query('SHOW TABLES')->fetchAll(\PDO::FETCH_COLUMN);
     }
 }

@@ -20,7 +20,7 @@ class DatabaseController extends Controller
 
         return $this->pageLoader->setPage('database/view')->render([
             'databaseName' => $databaseName,
-            'databaseTables' => $databaseTables
+            'databaseTables' => $databaseTables,
         ]);
     }
 }

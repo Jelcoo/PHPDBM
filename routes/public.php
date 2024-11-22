@@ -1,9 +1,9 @@
 <?php
 
+use App\Middleware\TableExists;
 use App\Middleware\DatabaseExists;
 use App\Middleware\EnsureLoggedIn;
 use App\Middleware\EnsureNotLoggedIn;
-use App\Middleware\TableExists;
 
 $router = App\Application\Router::getInstance();
 

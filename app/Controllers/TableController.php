@@ -27,7 +27,7 @@ class TableController extends Controller
             'databaseName' => $databaseName,
             'tableName' => $tableName,
             'tableColumns' => $tableColumns,
-            'tableRows' => $tableRows
+            'tableRows' => $tableRows,
         ]);
     }
 }

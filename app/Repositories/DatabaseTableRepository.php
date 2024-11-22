@@ -36,7 +36,7 @@ class DatabaseTableRepository extends DatabaseRepository
         if (! $this->useDatabase($database)) {
             return false;
         }
-        $statement = $this->getConnection()->prepare("SHOW TABLES");
+        $statement = $this->getConnection()->prepare('SHOW TABLES');
         $statement->execute();
 
         return in_array($table, $statement->fetchAll(\PDO::FETCH_COLUMN));

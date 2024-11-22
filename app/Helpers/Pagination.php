@@ -12,10 +12,10 @@ class Pagination
             'total' => ceil(count($data) / $perPage),
             'current' => $currentPage,
             'previous' => [],
-            'next' => []
+            'next' => [],
         ];
 
-        for ($i = 1; $i <= 2; $i++) {
+        for ($i = 1; $i <= 2; ++$i) {
             if ($currentPage - $i >= 1) {
                 $pages['previous'][] = $currentPage - $i;
             }
@@ -23,10 +23,10 @@ class Pagination
                 $pages['next'][] = $currentPage + $i;
             }
         }
-        
+
         return [
             'data' => $pagedData,
-            'pages' => $pages
+            'pages' => $pages,
         ];
     }
 }

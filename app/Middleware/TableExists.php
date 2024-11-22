@@ -2,8 +2,6 @@
 
 namespace App\Middleware;
 
-use App\Application\Session;
-use App\Application\Response;
 use App\Repositories\DatabaseDiscoveryRepository;
 
 class TableExists implements Middleware
