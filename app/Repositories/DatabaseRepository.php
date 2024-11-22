@@ -48,6 +48,15 @@ class DatabaseRepository
         return $this->pdoConnection;
     }
 
+    protected function useDatabase(string $databaseName): bool
+    {
+        if (! $this->isValidDatabaseName($databaseName)) {
+            return false;
+        }
+        $this->getConnection()->exec("USE `$databaseName`");
+        return true;
+    }
+
     public static function isValidDatabaseName(string $databaseName): bool
     {
         return preg_match('/^[a-zA-Z0-9_]+$/', $databaseName);

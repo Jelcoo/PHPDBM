@@ -11,14 +11,9 @@ class DatabaseTableRepository extends DatabaseRepository
 
     public function getTableColumns(string $database, string $table): array
     {
-        /*
-         * I can't bind a parameter in a FROM statement, so I have to check if the database & table name is valid.
-         * This ensures that the database or table name is not malicious.
-         */
-        if (! $this->isValidDatabaseName($database) || ! $this->isValidTableName($table)) {
+        if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
             return [];
         }
-        $this->getConnection()->exec("USE `$database`");
         $statement = $this->getConnection()->prepare("SHOW COLUMNS FROM `$table`");
         $statement->execute();
 
@@ -27,17 +22,23 @@ class DatabaseTableRepository extends DatabaseRepository
 
     public function getAllRowsForTable(string $database, string $table): array
     {
-        /*
-         * I can't bind a parameter in a FROM statement, so I have to check if the database & table name is valid.
-         * This ensures that the database or table name is not malicious.
-         */
-        if (! $this->isValidDatabaseName($database) || ! $this->isValidTableName($table)) {
+        if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
             return [];
         }
-        $this->getConnection()->exec("USE `$database`");
         $statement = $this->getConnection()->prepare("SELECT * FROM `$table`");
         $statement->execute();
 
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function tableExists(string $database, string $table): bool
+    {
+        if (! $this->useDatabase($database)) {
+            return false;
+        }
+        $statement = $this->getConnection()->prepare("SHOW TABLES");
+        $statement->execute();
+
+        return in_array($table, $statement->fetchAll(\PDO::FETCH_COLUMN));
     }
 }
