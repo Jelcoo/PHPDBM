@@ -22,7 +22,7 @@
         <li class="page-item">
             <a id="previous" class="page-link" href="#" tabindex="-1">Previous</a>
         </li>
-        <?php foreach ($tableRows['pages']['previous'] as $i): ?>
+        <?php foreach (array_reverse($tableRows['pages']['previous']) as $i): ?>
             <li class="page-item"><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
         <?php endforeach; ?>
         <li class="page-item"><a class="page-link" href="?page=<?= $tableRows['pages']['current'] ?>"><?= $tableRows['pages']['current'] ?></a></li>
