@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Database\Database;
+use App\Repositories\Database;
 use App\Application\Request;
 use App\Application\Session;
 use App\Application\Response;
