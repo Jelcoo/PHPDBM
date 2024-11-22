@@ -1,3 +1,6 @@
-<?php
+<p>Welcome to the homepage <?= $user ?></p>
+<p>Here are your databases</p>
 
-echo 'Welcome to the homepage ' . $user;
+<?php foreach ($databases as $database): ?>
+    <p><?= $database ?></p>
+<?php endforeach; ?>

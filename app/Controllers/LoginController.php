@@ -2,13 +2,21 @@
 
 namespace App\Controllers;
 
-use App\Repositories\Database;
 use App\Application\Request;
 use App\Application\Session;
 use App\Application\Response;
+use App\Repositories\DatabaseRepository;
 
 class LoginController extends Controller
 {
+    private DatabaseRepository $databaseRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->databaseRepository = new DatabaseRepository();
+    }
+
     public function index(): string
     {
         return $this->pageLoader->setPage('login')->render();
@@ -28,10 +36,9 @@ class LoginController extends Controller
             ]);
         }
 
-        $db = new Database();
-        $db->prepare($ipAddress, $port, $username, $password);
+        $this->databaseRepository->prepare($ipAddress, $port, $username, $password);
         try {
-            $db->getConnection();
+            $this->databaseRepository->getConnection();
             $_SESSION['ip_address'] = $ipAddress;
             $_SESSION['port'] = $port;
             $_SESSION['username'] = $username;

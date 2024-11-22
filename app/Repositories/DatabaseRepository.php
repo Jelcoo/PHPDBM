@@ -2,31 +2,27 @@
 
 namespace App\Repositories;
 
-class Database
+class DatabaseRepository
 {
-    private \PDO $pdoConnection;
+    protected \PDO $pdoConnection;
     private string $host = '';
     private string $port = '';
     private string $username = '';
     private string $password = '';
 
-    private static Database $database;
-
-    public static function getInstance(): Database
-    {
-        if (!isset(self::$database)) {
-            self::$database = new Database();
-        }
-
-        return self::$database;
-    }
-
-    public function prepare(string $ipAddress = '', string $port = '', string $username = '', string $password = '')
+    public function prepare(string $ipAddress = '', string $port = '', string $username = '', string $password = ''): void
     {
         $this->host = $ipAddress;
         $this->port = $port;
         $this->username = $username;
         $this->password = $password;
+
+        $this->connect();
+    }
+
+    public function prepareFromSession(): void
+    {
+        $this->prepare($_SESSION['ip_address'], $_SESSION['port'], $_SESSION['username'], $_SESSION['password']);
     }
 
     public function getConnection(): \PDO
