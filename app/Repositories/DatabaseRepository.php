@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 class DatabaseRepository
 {
-    protected \PDO $pdoConnection;
+    private \PDO $pdoConnection;
     private string $host = '';
     private string $port = '';
     private string $username = '';
@@ -46,5 +46,10 @@ class DatabaseRepository
         $this->pdoConnection = new \PDO($dsn, $this->username, $this->password, $options);
 
         return $this->pdoConnection;
+    }
+
+    public static function isValidDatabaseName(string $databaseName): bool
+    {
+        return preg_match('/^[a-zA-Z0-9_]+$/', $databaseName);
     }
 }
