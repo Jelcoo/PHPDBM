@@ -19,5 +19,7 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
 
     $router->middleware(DatabaseExists::class, function () use ($router) {
         $router->get('/database/{database}', [App\Controllers\DatabaseController::class, 'show']);
+
+        $router->get('/database/{database}/table/{table}', [App\Controllers\TableController::class, 'show']);
     });
 });

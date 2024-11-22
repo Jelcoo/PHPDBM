@@ -14,7 +14,7 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
         return $this->getConnection()->query('SHOW DATABASES')->fetchAll(\PDO::FETCH_COLUMN);
     }
 
-    public function GetAllTablesFromDatabase(string $databaseName): array
+    public function getAllTablesFromDatabase(string $databaseName): array
     {
         /*
          * I can't bind a parameter in a SHOW TABLES query, so I have to check if the database name is valid.

@@ -16,7 +16,7 @@ class DatabaseController extends Controller
 
     public function show(string $databaseName): string
     {
-        $databaseTables = $this->databaseDiscoveryRepository->GetAllTablesFromDatabase($databaseName);
+        $databaseTables = $this->databaseDiscoveryRepository->getAllTablesFromDatabase($databaseName);
 
         return $this->pageLoader->setPage('database/view')->render([
             'databaseName' => $databaseName,

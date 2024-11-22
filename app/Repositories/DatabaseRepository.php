@@ -52,4 +52,8 @@ class DatabaseRepository
     {
         return preg_match('/^[a-zA-Z0-9_]+$/', $databaseName);
     }
+    public static function isValidTableName(string $tableName): bool
+    {
+        return preg_match('/^[a-zA-Z0-9_]+$/', $tableName);
+    }
 }
