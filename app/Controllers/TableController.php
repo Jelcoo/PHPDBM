@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Helpers\Pagination;
 use App\Repositories\DatabaseTableRepository;
 
 class TableController extends Controller
@@ -18,6 +19,9 @@ class TableController extends Controller
     {
         $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
         $tableRows = $this->databaseTableRepository->getAllRowsForTable($databaseName, $tableName);
+
+        $page = $_GET['page'] ?? 1;
+        $tableRows = Pagination::paginate($tableRows, 10, $page);
 
         return $this->pageLoader->setPage('database/table/view')->render([
             'databaseName' => $databaseName,
