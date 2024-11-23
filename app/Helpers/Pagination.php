@@ -4,12 +4,11 @@ namespace App\Helpers;
 
 class Pagination
 {
-    public static function paginate($data, $perPage = 10, $currentPage = 1): mixed
+    public static function paginate(array $data, int $totalRecords, int $perPage = 10, int $currentPage = 1): mixed
     {
         $currentPage = (int) $currentPage;
-        $pagedData = array_slice($data, ($currentPage - 1) * $perPage, $perPage);
         $pages = [
-            'total' => ceil(count($data) / $perPage),
+            'total' => ceil($totalRecords / $perPage),
             'current' => $currentPage,
             'previous' => [],
             'next' => [],
@@ -25,7 +24,7 @@ class Pagination
         }
 
         return [
-            'data' => $pagedData,
+            'data' => $data,
             'pages' => $pages,
         ];
     }

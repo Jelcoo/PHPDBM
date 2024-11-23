@@ -17,11 +17,14 @@ class TableController extends Controller
 
     public function show(string $databaseName, string $tableName): string
     {
-        $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
-        $tableRows = $this->databaseTableRepository->getAllRowsForTable($databaseName, $tableName);
-
         $page = $_GET['page'] ?? 1;
-        $tableRows = Pagination::paginate($tableRows, 10, $page);
+        $perPage = $_GET['size'] ?? 10;
+
+        $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
+        $tableRows = $this->databaseTableRepository->getPagedRowsForTable($databaseName, $tableName, $page, $perPage);
+        $totalRecords = $this->databaseTableRepository->countRowsForTable($databaseName, $tableName);
+
+        $tableRows = Pagination::paginate($tableRows, $totalRecords, $perPage, $page);
 
         return $this->pageLoader->setPage('database/table/view')->render([
             'databaseName' => $databaseName,

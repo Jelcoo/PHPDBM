@@ -17,23 +17,26 @@
         </tbody>
     </table>
 </div>
-<nav aria-label="Table navigation">
-    <ul class="pagination justify-content-end">
-        <li class="page-item">
-            <a id="previous" class="page-link" href="#" tabindex="-1">Previous</a>
-        </li>
-        <?php foreach (array_reverse($tableRows['pages']['previous']) as $i) { ?>
-            <li class="page-item"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
-        <?php } ?>
-        <li class="page-item"><a class="page-link" href="?page=<?php echo $tableRows['pages']['current']; ?>"><?php echo $tableRows['pages']['current']; ?></a></li>
-        <?php foreach ($tableRows['pages']['next'] as $i) { ?>
-            <li class="page-item"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
-        <?php } ?>
-        <li class="page-item">
-            <a id="next" class="page-link" href="#">Next</a>
-        </li>
-    </ul>
-</nav>
+<div class="d-flex justify-content-between">
+    <p>Showing page <?php echo $tableRows['pages']['current']; ?> of <?php echo $tableRows['pages']['total']; ?></p>
+    <nav aria-label="Table navigation">
+        <ul class="pagination justify-content-end">
+            <li class="page-item">
+                <a id="previous" class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <?php foreach (array_reverse($tableRows['pages']['previous']) as $i) { ?>
+                <li class="page-item"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+            <?php } ?>
+            <li class="page-item"><a class="page-link" href="?page=<?php echo $tableRows['pages']['current']; ?>"><?php echo $tableRows['pages']['current']; ?></a></li>
+            <?php foreach ($tableRows['pages']['next'] as $i) { ?>
+                <li class="page-item"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+            <?php } ?>
+            <li class="page-item">
+                <a id="next" class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
 <script>
     const lastPage = <?php echo $tableRows['pages']['total']; ?>;
