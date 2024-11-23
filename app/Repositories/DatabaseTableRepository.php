@@ -58,8 +58,11 @@ class DatabaseTableRepository extends DatabaseRepository
 
         $queryBuilder = new QueryBuilder($this->getConnection());
         $queryBuilder->table($table)
-            ->where('updateTime', 'LIKE', "%$search%")
             ->limit($perPage, $offset);
+
+        foreach ($tableColumns as $column) {
+            $queryBuilder->orWhere($column['Field'], 'LIKE', "%$search%");
+        }
 
         return $queryBuilder->get();
     }
@@ -69,10 +72,14 @@ class DatabaseTableRepository extends DatabaseRepository
         if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
             return 0;
         }
+        $tableColumns = $this->getTableColumns($database, $table);
 
         $queryBuilder = new QueryBuilder($this->getConnection());
-        $queryBuilder->table($table)
-            ->where('updateTime', 'LIKE', "%$search%");
+        $queryBuilder->table($table);
+
+        foreach ($tableColumns as $column) {
+            $queryBuilder->orWhere($column['Field'], 'LIKE', "%$search%");
+        }
 
         return $queryBuilder->count();
     }

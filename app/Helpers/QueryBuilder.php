@@ -38,6 +38,17 @@ class QueryBuilder {
         return $this;
     }
 
+    public function orWhere(string $column, string $operator, $value): self {
+        $placeholder = ':' . str_replace('.', '_', $column) . count($this->bindings);
+        if (!empty($this->conditions)) {
+            $this->conditions[] = "OR $column $operator $placeholder";
+        } else {
+            $this->conditions[] = "$column $operator $placeholder";
+        }
+        $this->bindings[$placeholder] = $value;
+        return $this;
+    }
+
     public function orderBy(string $column, string $direction = 'ASC'): self {
         $this->orderBy = "ORDER BY $column $direction";
         return $this;
@@ -78,7 +89,7 @@ class QueryBuilder {
         $sql = "SELECT $columns FROM {$this->table}";
 
         if (!empty($this->conditions)) {
-            $sql .= ' WHERE ' . implode(' AND ', $this->conditions);
+            $sql .= ' WHERE ' . ltrim(implode(' ', $this->conditions));
         }
 
         if ($this->orderBy) {
