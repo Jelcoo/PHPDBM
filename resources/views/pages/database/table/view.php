@@ -1,4 +1,4 @@
-<h1><?php echo $databaseName; ?> - <?php echo $tableName; ?></h1>
+<h1><a href="/database/<?php echo $databaseName; ?>"><?php echo $databaseName; ?></a> - <?php echo $tableName; ?></h1>
 <div class="d-flex align-items-center gap-2">
     <input class="form-control" id="search" type="text" placeholder="Search..." autofocus>
     <select class="form-select w-auto" id="resultsSelector">
@@ -8,9 +8,10 @@
         <option value="100">100 Results</option>
     </select>
 </div>
-<div class="table-responsive">
-    <table class="table table-striped">
+<div class="table-responsive mt-2">
+    <table class="table table-striped table-bordered">
         <thead>
+            <th></th>
             <?php foreach ($tableColumns as $column) { ?>
                 <th scope="col"><?php echo $column['Field']; ?></th>
             <?php } ?>
@@ -18,8 +19,11 @@
         <tbody>
             <?php foreach ($tableRows['data'] as $row) { ?>
                 <tr>
+                    <td>
+                        <button class="btn btn-primary btn-sm"><i class="fa-solid fa-pencil"></i></button>
+                    </td>
                     <?php foreach ($tableColumns as $column) { ?>
-                        <td class="text-truncate"><?php echo $row[$column['Field']]; ?></td>
+                        <td class="align-middle text-truncate text-truncate-width field-<?php echo $column['Field']; ?>"><?php echo $row[$column['Field']]; ?></td>
                     <?php } ?>
                 </tr>
             <?php } ?>
@@ -46,6 +50,12 @@
         </ul>
     </nav>
 </div>
+
+<style>
+    .text-truncate-width {
+        max-width: 150px;
+    }
+</style>
 
 <script>
     const lastPage = <?php echo $tableRows['pages']['total']; ?>;
@@ -91,4 +101,14 @@
     searchInput.addEventListener('input', debounce(() => {
         setUrlQuery(['page',  1], ['search', searchInput.value]);
     }, 500));
+
+    const table = document.querySelector('table');
+    table.addEventListener('dblclick', (event) => {
+        if (event.target.tagName === 'TD') {
+            const fieldClass = Array.from(event.target.classList).filter((className) => className.startsWith('field-'))[0];
+            Array.from(document.getElementsByClassName(fieldClass)).forEach((match) => {
+                match.classList.toggle('text-truncate-width');
+            });
+        }
+    });
 </script>
