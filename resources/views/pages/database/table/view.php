@@ -34,11 +34,11 @@
                 <button id="previous" class="page-link" tabindex="-1">Previous</button>
             </li>
             <?php foreach (array_reverse($tableRows['pages']['previous']) as $i) { ?>
-                <li class="page-item"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                <li class="page-item"><button class="page-link specific-page" id="page<?php echo $i; ?>"><?php echo $i; ?></button></li>
             <?php } ?>
-            <li class="page-item"><a class="page-link" href="?page=<?php echo $tableRows['pages']['current']; ?>"><?php echo $tableRows['pages']['current']; ?></a></li>
+            <li class="page-item active"><button class="page-link specific-page" id="page<?php echo $tableRows['pages']['current']; ?>"><?php echo $tableRows['pages']['current']; ?></button></li>
             <?php foreach ($tableRows['pages']['next'] as $i) { ?>
-                <li class="page-item"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                <li class="page-item"><button class="page-link specific-page" id="page<?php echo $i; ?>"><?php echo $i; ?></button></li>
             <?php } ?>
             <li class="page-item">
                 <button id="next" class="page-link">Next</button>
@@ -53,10 +53,13 @@
 
     const previousButton = document.getElementById('previous');
     const nextButton = document.getElementById('next');
-    const activePageButton = document.querySelectorAll('.page-item').entries().find(page => page[1].querySelector('.page-link').textContent === currentPage.toString());
-    if (activePageButton && activePageButton[1]) {
-        activePageButton[1].classList.add('active');
-    }
+    const pageItemLinks = document.querySelectorAll('.specific-page');
+
+    pageItemLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+            setUrlQuery(['page',  link.id.replace('page', '')]);
+        });
+    });
 
     previousButton.addEventListener('click', () => {
         if (currentPage > 1) {
