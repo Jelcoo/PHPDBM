@@ -89,10 +89,10 @@ class DatabaseTableRepository extends DatabaseRepository
         if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
             return 0;
         }
-        $statement = $this->getConnection()->prepare("SELECT COUNT(*) FROM `$table`");
-        $statement->execute();
+        $queryBuilder = new QueryBuilder($this->getConnection());
+        $queryBuilder->table($table);
 
-        return (int) $statement->fetchColumn();
+        return $queryBuilder->count();
     }
 
     public function tableExists(string $database, string $table): bool
