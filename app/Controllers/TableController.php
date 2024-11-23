@@ -19,10 +19,16 @@ class TableController extends Controller
     {
         $page = $_GET['page'] ?? 1;
         $perPage = $_GET['size'] ?? 25;
+        $search = $_GET['search'] ?? null;
 
         $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
-        $tableRows = $this->databaseTableRepository->getPagedRowsForTable($databaseName, $tableName, $page, $perPage);
-        $totalRecords = $this->databaseTableRepository->countRowsForTable($databaseName, $tableName);
+        if ($search) {
+            $tableRows = $this->databaseTableRepository->getPagedSearchedRowsForTable($databaseName, $tableName, $page, $perPage, $search);
+            $totalRecords = $this->databaseTableRepository->countSearchedRowsForTable($databaseName, $tableName, $search);
+        } else {
+            $tableRows = $this->databaseTableRepository->getPagedRowsForTable($databaseName, $tableName, $page, $perPage);
+            $totalRecords = $this->databaseTableRepository->countRowsForTable($databaseName, $tableName);
+        }
 
         $tableRows = Pagination::paginate($tableRows, $totalRecords, $perPage, $page);
 

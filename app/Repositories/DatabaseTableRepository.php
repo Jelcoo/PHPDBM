@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Helpers\QueryBuilder;
+
 class DatabaseTableRepository extends DatabaseRepository
 {
     public function __construct()
@@ -25,10 +27,11 @@ class DatabaseTableRepository extends DatabaseRepository
         if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
             return [];
         }
-        $statement = $this->getConnection()->prepare("SELECT * FROM `$table`");
-        $statement->execute();
 
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $queryBuilder = new QueryBuilder($this->getConnection());
+        $queryBuilder->table($table);
+
+        return $queryBuilder->get();
     }
 
     public function getPagedRowsForTable(string $database, string $table, int $page, int $perPage): array
@@ -37,10 +40,41 @@ class DatabaseTableRepository extends DatabaseRepository
             return [];
         }
         $offset = ($page - 1) * $perPage;
-        $statement = $this->getConnection()->prepare("SELECT * FROM `$table` LIMIT $perPage OFFSET $offset");
-        $statement->execute();
 
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $queryBuilder = new QueryBuilder($this->getConnection());
+        $queryBuilder->table($table)
+            ->limit($perPage, $offset);
+
+        return $queryBuilder->get();
+    }
+
+    public function getPagedSearchedRowsForTable(string $database, string $table, int $page, int $perPage, string $search): array
+    {
+        if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
+            return [];
+        }
+        $offset = ($page - 1) * $perPage;
+        $tableColumns = $this->getTableColumns($database, $table);
+
+        $queryBuilder = new QueryBuilder($this->getConnection());
+        $queryBuilder->table($table)
+            ->where('updateTime', 'LIKE', "%$search%")
+            ->limit($perPage, $offset);
+
+        return $queryBuilder->get();
+    }
+
+    public function countSearchedRowsForTable(string $database, string $table, string $search): int
+    {
+        if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
+            return 0;
+        }
+
+        $queryBuilder = new QueryBuilder($this->getConnection());
+        $queryBuilder->table($table)
+            ->where('updateTime', 'LIKE', "%$search%");
+
+        return $queryBuilder->count();
     }
 
     public function countRowsForTable(string $database, string $table): int

@@ -1,6 +1,6 @@
 <h1><?php echo $databaseName; ?> - <?php echo $tableName; ?></h1>
 <div class="d-flex align-items-center gap-2">
-    <input class="form-control" id="search" type="text" placeholder="Search...">
+    <input class="form-control" id="search" type="text" placeholder="Search..." autofocus>
     <select class="form-select w-auto" id="resultsSelector">
         <option value="10">10 Results</option>
         <option value="25">25 Results</option>
@@ -82,4 +82,10 @@
     resultsSelector.addEventListener('change', () => {
         setUrlQuery(['page',  1], ['size', resultsSelector.value]);
     });
+
+    const searchInput = document.getElementById('search');
+    searchInput.value = '<?php echo $_GET['search'] ?? ''; ?>';
+    searchInput.addEventListener('input', debounce(() => {
+        setUrlQuery(['page',  1], ['search', searchInput.value]);
+    }, 500));
 </script>
