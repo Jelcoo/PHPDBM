@@ -18,7 +18,7 @@ class TableController extends Controller
     public function show(string $databaseName, string $tableName): string
     {
         $page = $_GET['page'] ?? 1;
-        $perPage = $_GET['size'] ?? 10;
+        $perPage = $_GET['size'] ?? 25;
 
         $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
         $tableRows = $this->databaseTableRepository->getPagedRowsForTable($databaseName, $tableName, $page, $perPage);

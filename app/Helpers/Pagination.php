@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Pagination
 {
-    public static function paginate(array $data, int $totalRecords, int $perPage = 10, int $currentPage = 1): mixed
+    public static function paginate(array $data, int $totalRecords, int $perPage = 25, int $currentPage = 1): mixed
     {
         $currentPage = (int) $currentPage;
         $pages = [
@@ -12,6 +12,7 @@ class Pagination
             'current' => $currentPage,
             'previous' => [],
             'next' => [],
+            'perPage' => $perPage,
         ];
 
         for ($i = 1; $i <= 2; ++$i) {

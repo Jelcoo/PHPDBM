@@ -1,4 +1,13 @@
 <h1><?php echo $databaseName; ?> - <?php echo $tableName; ?></h1>
+<div class="d-flex align-items-center gap-2">
+    <input class="form-control" id="search" type="text" placeholder="Search...">
+    <select class="form-select w-auto" id="resultsSelector">
+        <option value="10">10 Results</option>
+        <option value="25">25 Results</option>
+        <option value="50">50 Results</option>
+        <option value="100">100 Results</option>
+    </select>
+</div>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -22,7 +31,7 @@
     <nav aria-label="Table navigation">
         <ul class="pagination justify-content-end">
             <li class="page-item">
-                <a id="previous" class="page-link" href="#" tabindex="-1">Previous</a>
+                <button id="previous" class="page-link" tabindex="-1">Previous</button>
             </li>
             <?php foreach (array_reverse($tableRows['pages']['previous']) as $i) { ?>
                 <li class="page-item"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
@@ -32,7 +41,7 @@
                 <li class="page-item"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
             <?php } ?>
             <li class="page-item">
-                <a id="next" class="page-link" href="#">Next</a>
+                <button id="next" class="page-link">Next</button>
             </li>
         </ul>
     </nav>
@@ -51,13 +60,13 @@
 
     previousButton.addEventListener('click', () => {
         if (currentPage > 1) {
-            window.location.href = `?page=${currentPage - 1}`;
+            setUrlQuery(['page',  currentPage - 1]);
         }
     });
 
     nextButton.addEventListener('click', () => {
         if (currentPage < lastPage) {
-            window.location.href = `?page=${currentPage + 1}`;
+            setUrlQuery(['page',  currentPage + 1]);
         }
     });
 
@@ -67,4 +76,10 @@
     if (currentPage === 1) {
         previousButton.classList.add('disabled');
     }
+
+    const resultsSelector = document.getElementById('resultsSelector');
+    resultsSelector.value = '<?php echo $tableRows['pages']['perPage']; ?>';
+    resultsSelector.addEventListener('change', () => {
+        setUrlQuery(['page',  1], ['size', resultsSelector.value]);
+    });
 </script>
