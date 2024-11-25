@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Application\Session;
+
 class DatabaseRepository
 {
     private \PDO $pdoConnection;
@@ -22,7 +24,9 @@ class DatabaseRepository
 
     public function prepareFromSession(): void
     {
-        $this->prepare($_SESSION['ip_address'], $_SESSION['port'], $_SESSION['username'], $_SESSION['password']);
+        if (Session::isValidSession()) {
+            $this->prepare($_SESSION['ip_address'], $_SESSION['port'], $_SESSION['username'], $_SESSION['password']);
+        }
     }
 
     public function getConnection(): \PDO
