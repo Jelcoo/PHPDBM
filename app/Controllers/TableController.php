@@ -5,15 +5,19 @@ namespace App\Controllers;
 use App\Helpers\Database as DatabaseHelpers;
 use App\Helpers\Pagination;
 use App\Repositories\DatabaseTableRepository;
+use App\Repositories\DatabaseUpdateRepository;
+use App\Enum\SuccessEnum;
 
 class TableController extends Controller
 {
     private DatabaseTableRepository $databaseTableRepository;
+    private DatabaseUpdateRepository $databaseUpdateRepository;
 
     public function __construct()
     {
         parent::__construct();
         $this->databaseTableRepository = new DatabaseTableRepository();
+        $this->databaseUpdateRepository = new DatabaseUpdateRepository();
     }
 
     public function show(string $databaseName, string $tableName): string
@@ -57,11 +61,40 @@ class TableController extends Controller
         ]);
     }
 
-    public function updateRow(string $databaseName, string $tableName, string $key): string
+    public function updateRow(string $databaseName, string $tableName, string $key)
     {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
+        $primaryKey = DatabaseHelpers::getPrimaryKey($tableColumns);
+        $tableRow = $this->databaseTableRepository->getRowByKey($databaseName, $tableName, $primaryKey, $key);
+
+        $updateStatement = [];
+        foreach ($data as $rowField) {
+            if ($rowField['value'] != $tableRow[$rowField['field']]) {
+                $updateStatement[$rowField['field']] = $rowField['null'] ? null : $rowField['value'];
+            }
+        }
+
+        if (empty($updateStatement)) {
+            return json_encode([
+                'type' => SuccessEnum::WARNING,
+                'message' => 'No rows have changed',
+            ]);
+        }
+
+        try {
+            $this->databaseUpdateRepository->updateRow($databaseName, $tableName, $primaryKey, $key, $updateStatement);
+        } catch (\Exception $e) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => $e->getMessage(),
+            ]);
+        }
+
         return json_encode([
-            'status' => 'success',
-            'message' => json_encode($_POST)
+            'type' => SuccessEnum::SUCCESS,
+            'message' => 'Row updated successfully',
         ]);
     }
 }

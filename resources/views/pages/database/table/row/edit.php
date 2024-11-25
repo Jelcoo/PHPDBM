@@ -1,4 +1,5 @@
 <h1><a href="/database/<?php echo $databaseName; ?>"><?php echo $databaseName; ?></a> - <a href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>"><?php echo $tableName; ?></a></h1>
+<div class="alert d-none" role="alert"></div>
 <table class="table table-striped table-bordered">
     <thead>
         <th>Column</th>
@@ -45,15 +46,20 @@
         });
 
         fetch('/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/<?php echo $primaryKey; ?>', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const statusClass = data.type === 'success' ? 'alert-success'
+                : data.type === 'warning' ? 'alert-warning'
+                : 'alert-danger';
+                const statusBanner = document.querySelector('.alert');
+                statusBanner.classList = 'alert ' + statusClass;
+                statusBanner.textContent = data.message;
+            });
     });
 </script>

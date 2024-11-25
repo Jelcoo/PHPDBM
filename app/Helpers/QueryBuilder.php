@@ -18,6 +18,7 @@ class QueryBuilder
     private string $orderBy = '';
     private string $limit = '';
     private QueryType $queryType = QueryType::QUERY_TYPE_ALL;
+    private array $updates = [];
 
     public function __construct(\PDO $pdo)
     {
@@ -106,6 +107,25 @@ class QueryBuilder
         return empty($result) ? null : $result[0];
     }
 
+    public function update(array $data): int
+    {
+        $this->updates = $data;
+        $sql = $this->buildUpdateQuery();
+        $stmt = $this->pdo->prepare($sql);
+
+        foreach ($this->updates as $column => $value) {
+            $stmt->bindValue(":update_$column", $value);
+        }
+
+        foreach ($this->bindings as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
+        $stmt->execute();
+
+        return $stmt->rowCount(); // Returns the number of rows affected
+    }
+
     private function buildSelectQuery(): string
     {
         if ($this->queryType === QueryType::QUERY_TYPE_COUNT) {
@@ -125,6 +145,22 @@ class QueryBuilder
 
         if ($this->limit) {
             $sql .= ' ' . $this->limit;
+        }
+
+        return $sql;
+    }
+
+    private function buildUpdateQuery(): string
+    {
+        $updateFields = [];
+        foreach ($this->updates as $column => $value) {
+            $updateFields[] = "$column = :update_$column";
+        }
+
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $updateFields);
+
+        if (!empty($this->conditions)) {
+            $sql .= ' WHERE ' . ltrim(implode(' ', $this->conditions));
         }
 
         return $sql;
