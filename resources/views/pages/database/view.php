@@ -9,7 +9,7 @@
         <tbody>
             <?php foreach ($databaseTables as $table) { ?>
                 <tr>
-                    <td><a href="/database/<?php echo $databaseName; ?>/table/<?php echo $table; ?>"><?php echo $table; ?></a></td>
+                    <td><a href="/database/<?php echo $databaseName; ?>/<?php echo $table; ?>"><?php echo $table; ?></a></td>
                 </tr>
             <?php } ?>
         </tbody>

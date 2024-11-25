@@ -17,12 +17,14 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
 
     $router->get('/logout', [App\Controllers\LoginController::class, 'logout']);
 
-
     $router->middleware(DatabaseExists::class, function () use ($router) {
         $router->get('/database/{database}', [App\Controllers\DatabaseController::class, 'show']);
 
         $router->middleware(TableExists::class, function () use ($router) {
-            $router->get('/database/{database}/table/{table}', [App\Controllers\TableController::class, 'show']);
+            $router->get('/database/{database}/{table}', [App\Controllers\TableController::class, 'show']);
+
+            $router->get('/database/{database}/{table}/{key}', [App\Controllers\TableController::class, 'editRow']);
+            $router->post('/database/{database}/{table}/{key}', [App\Controllers\TableController::class, 'updateRow']);
         });
     });
 });

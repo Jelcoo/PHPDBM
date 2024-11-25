@@ -99,6 +99,13 @@ class QueryBuilder
         return (int) $stmt->fetchColumn();
     }
 
+    public function first(): ?array
+    {
+        $this->limit(1);
+        $result = $this->get();
+        return empty($result) ? null : $result[0];
+    }
+
     private function buildSelectQuery(): string
     {
         if ($this->queryType === QueryType::QUERY_TYPE_COUNT) {

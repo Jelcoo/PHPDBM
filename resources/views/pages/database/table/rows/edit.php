@@ -1,0 +1,59 @@
+<h1><a href="/database/<?php echo $databaseName; ?>"><?php echo $databaseName; ?></a> - <a href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>"><?php echo $tableName; ?></a></h1>
+<table class="table table-striped table-bordered">
+    <thead>
+        <th>Column</th>
+        <th>Type</th>
+        <th>Null</th>
+        <th>Value</th>
+    </thead>
+    <tbody>
+        <?php foreach ($tableColumns as $column) { ?>
+            <tr id="field-<?php echo $column['Field']; ?>">
+                <td class="align-middle text-truncate text-truncate-width"><?php echo $column['Field']; ?></td>
+                <td class="align-middle text-truncate text-truncate-width"><?php echo $column['Type']; ?></td>
+                <td class="align-middle text-truncate text-truncate-width">
+                    <input type="checkbox" name="field-null-<?php echo $column['Field']; ?>" value="1" <?php echo $column['Null'] === 'YES' ? '' : 'disabled'; ?> <?php echo $tableRow[$column['Field']] === null ? 'checked' : ''; ?>>
+                </td>
+                <td class="align-middle text-truncate text-truncate-width">
+                    <textarea class="form-control" name="field-<?php echo $column['Field']; ?>" rows="<?php echo strlen($tableRow[$column['Field']]) > 100 ? '3' : '1'; ?>"><?php echo $tableRow[$column['Field']]; ?></textarea>
+                </td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
+<div class="d-flex justify-content-end">
+    <button type="submit" class="btn btn-primary">Save</button>
+</div>
+
+<script>
+    const saveButton = document.querySelector('button[type="submit"]');
+    saveButton.addEventListener('click', () => {
+        const tableRows = Array.from(document.querySelectorAll('tr')).filter((row) => {
+            return row.id.startsWith('field-');
+        });
+
+        const data = tableRows.map((row) => {
+            const field = row.id.replace('field-', '');
+            const nullInput = document.querySelector(`input[name="field-null-${field}"]`);
+            const nullValue = nullInput.checked ? 1 : 0;
+            const value = document.querySelector(`textarea[name="field-${field}"]`).value;
+            return {
+                field: field,
+                null: nullValue,
+                value: value
+            };
+        });
+
+        fetch('/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/<?php echo $primaryKey; ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        });
+    });
+</script>

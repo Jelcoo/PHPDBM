@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Helpers\Database as DatabaseHelpers;
 use App\Helpers\Pagination;
 use App\Repositories\DatabaseTableRepository;
 
@@ -37,6 +38,30 @@ class TableController extends Controller
             'tableName' => $tableName,
             'tableColumns' => $tableColumns,
             'tableRows' => $tableRows,
+            'primaryKey' => DatabaseHelpers::getPrimaryKey($tableColumns),
+        ]);
+    }
+
+    public function editRow(string $databaseName, string $tableName, string $key): string
+    {
+        $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
+        $primaryKey = DatabaseHelpers::getPrimaryKey($tableColumns);
+        $tableRow = $this->databaseTableRepository->getRowByKey($databaseName, $tableName, $primaryKey, $key);
+
+        return $this->pageLoader->setPage('database/table/rows/edit')->render([
+            'databaseName' => $databaseName,
+            'tableName' => $tableName,
+            'primaryKey' => $key,
+            'tableColumns' => $tableColumns,
+            'tableRow' => $tableRow,
+        ]);
+    }
+
+    public function updateRow(string $databaseName, string $tableName, string $key): string
+    {
+        return json_encode([
+            'status' => 'success',
+            'message' => json_encode($_POST)
         ]);
     }
 }

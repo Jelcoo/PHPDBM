@@ -11,17 +11,21 @@
 <div class="table-responsive mt-2">
     <table class="table table-striped table-bordered">
         <thead>
-            <th></th>
+            <?php if ($primaryKey) { ?>
+                <th></th>
+            <?php } ?>
             <?php foreach ($tableColumns as $column) { ?>
                 <th scope="col"><?php echo $column['Field']; ?></th>
             <?php } ?>
         </thead>
         <tbody>
             <?php foreach ($tableRows['data'] as $row) { ?>
-                <tr>
-                    <td>
-                        <button class="btn btn-primary btn-sm"><i class="fa-solid fa-pencil"></i></button>
-                    </td>
+                <tr class="row-<?php echo $row[$primaryKey]; ?>">
+                    <?php if ($primaryKey) { ?>
+                        <td>
+                            <a class="btn btn-primary btn-sm" href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/<?php echo $row[$primaryKey]; ?>"><i class="fa-solid fa-pencil"></i></a>
+                        </td>
+                    <?php } ?>
                     <?php foreach ($tableColumns as $column) { ?>
                         <td class="align-middle text-truncate text-truncate-width field-<?php echo $column['Field']; ?>"><?php echo $row[$column['Field']]; ?></td>
                     <?php } ?>

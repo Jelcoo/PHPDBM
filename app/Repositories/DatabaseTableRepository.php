@@ -105,4 +105,16 @@ class DatabaseTableRepository extends DatabaseRepository
 
         return in_array($table, $statement->fetchAll(\PDO::FETCH_COLUMN));
     }
+
+    public function getRowByKey(string $database, string $table, string $primaryKey, string $key): array
+    {
+        if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
+            return [];
+        }
+        $queryBuilder = new QueryBuilder($this->getConnection());
+        $queryBuilder->table($table)
+            ->where($primaryKey, '=', $key);
+
+        return $queryBuilder->first();
+    }
 }
