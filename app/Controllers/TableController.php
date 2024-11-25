@@ -48,7 +48,7 @@ class TableController extends Controller
         $primaryKey = DatabaseHelpers::getPrimaryKey($tableColumns);
         $tableRow = $this->databaseTableRepository->getRowByKey($databaseName, $tableName, $primaryKey, $key);
 
-        return $this->pageLoader->setPage('database/table/rows/edit')->render([
+        return $this->pageLoader->setPage('database/table/row/edit')->render([
             'databaseName' => $databaseName,
             'tableName' => $tableName,
             'primaryKey' => $key,
