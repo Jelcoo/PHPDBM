@@ -10,7 +10,7 @@
     <tbody>
         <?php foreach ($tableColumns as $column) { ?>
             <tr id="field-<?php echo $column['Field']; ?>">
-                <td class="align-middle text-truncate text-truncate-width"><?php echo $column['Field']; ?></td>
+                <td class="align-middle text-truncate text-truncate-width"><?php echo $column['Field']; ?> <?php echo $column['Key'] === 'PRI' ? '<i class="fa-solid fa-key text-warning"></i>' : ''; ?></td>
                 <td class="align-middle text-truncate text-truncate-width"><?php echo $column['Type']; ?></td>
                 <td class="align-middle text-truncate text-truncate-width">
                     <input type="checkbox" name="field-null-<?php echo $column['Field']; ?>" value="1" <?php echo $column['Null'] === 'YES' ? '' : 'disabled'; ?> <?php echo $tableRow[$column['Field']] === null ? 'checked' : ''; ?>>
