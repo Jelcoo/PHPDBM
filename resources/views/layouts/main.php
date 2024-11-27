@@ -26,6 +26,7 @@ $loggedIn = Session::isValidSession();
         </script>
 
         <script src="/assets/js/utils.js"></script>
+        <script src="/assets/js/tableutils.js"></script>
     </head>
 
     <body class="container">

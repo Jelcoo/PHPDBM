@@ -62,4 +62,6 @@
                 statusBanner.textContent = data.message;
             });
     });
+
+    registerRowEditUtils();
 </script>
