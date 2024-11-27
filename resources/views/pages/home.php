@@ -10,6 +10,8 @@
         <thead>
             <tr>
                 <th scope="col">Database Name</th>
+                <th scope="col">Size</th>
+                <th scope="col">Table Count</th>
             </tr>
         </thead>
         <tbody>
@@ -37,14 +39,24 @@
     });
 
     function dbToTableRow(database) {
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        const a = document.createElement('a');
-        a.href = `/database/${database}`;
-        a.textContent = database;
-        td.appendChild(a);
-        tr.appendChild(td);
+        const row = document.createElement('tr');
 
-        return tr;
+        const name = document.createElement('td');
+        const a = document.createElement('a');
+        a.href = `/database/${database.name}`;
+        a.textContent = database.name;
+        name.appendChild(a);
+
+        const size = document.createElement('td');
+        size.textContent = formatBytes(database.size);
+
+        const tableCount = document.createElement('td');
+        tableCount.textContent = database.tableCount;
+
+        row.appendChild(name);
+        row.appendChild(size);
+        row.appendChild(tableCount);
+
+        return row;
     }
 </script>

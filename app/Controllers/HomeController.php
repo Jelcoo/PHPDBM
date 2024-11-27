@@ -19,9 +19,18 @@ class HomeController extends Controller
         $username = $_SESSION['username'];
         $databases = $this->databaseDiscoveryRepository->getAllDatabases();
 
+        $formattedDatabases = [];
+        foreach ($databases as $database) {
+            $formattedDatabases[] = [
+                'name' => $database,
+                'size' => $this->databaseDiscoveryRepository->getDatabaseSize($database),
+                'tableCount' => $this->databaseDiscoveryRepository->countDatabaseTables($database),
+            ];
+        }
+
         return $this->pageLoader->setPage('home')->render([
             'user' => $username,
-            'databases' => $databases,
+            'databases' => $formattedDatabases,
         ]);
     }
 }
