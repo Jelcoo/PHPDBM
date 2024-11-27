@@ -20,14 +20,15 @@
         </thead>
         <tbody>
             <?php foreach ($tableRows['data'] as $row) { ?>
-                <tr class="row-<?php echo $row[$primaryKey]; ?>">
+                <tr class="row-<?php echo isset($primaryKey) ? $row[$primaryKey] : 'unknown'; ?>">
                     <?php if ($primaryKey) { ?>
                         <td>
                             <a class="btn btn-primary btn-sm" href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/<?php echo $row[$primaryKey]; ?>"><i class="fa-solid fa-pencil"></i></a>
                         </td>
                     <?php } ?>
                     <?php foreach ($tableColumns as $column) { ?>
-                        <td class="align-middle text-truncate text-truncate-width field-<?php echo $column['Field']; ?>"><?php echo $row[$column['Field']]; ?></td>
+                        <?php $value = $row[$column['Field']]; ?>
+                        <td class="align-middle text-truncate text-truncate-width <?php echo $value === null || empty($value) ? 'fst-italic text-danger-emphasis' : ''; ?> field-<?php echo $column['Field']; ?>"><?php echo ($value === null ? 'NULL' : empty($value)) ? 'EMPTY' : $value; ?></td>
                     <?php } ?>
                 </tr>
             <?php } ?>
