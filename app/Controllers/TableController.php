@@ -46,6 +46,44 @@ class TableController extends Controller
         ]);
     }
 
+    public function newRow(string $databaseName, string $tableName): string
+    {
+        $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
+
+        return $this->pageLoader->setPage('database/table/row/new')->render([
+            'databaseName' => $databaseName,
+            'tableName' => $tableName,
+            'tableColumns' => $tableColumns,
+        ]);
+    }
+
+    public function createRow(string $databaseName, string $tableName)
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $createStatement = [];
+        foreach ($data as $rowField) {
+            if ($rowField['value'] == '') {
+                continue;
+            }
+            $createStatement[$rowField['field']] = $rowField['null'] ? null : $rowField['value'];
+        }
+
+        try {
+            $insertedId = $this->databaseUpdateRepository->createRow($databaseName, $tableName, $createStatement);
+
+            return json_encode([
+                'type' => SuccessEnum::SUCCESS,
+                'message' => 'Row created successfully. ID: ' . $insertedId,
+            ]);
+        } catch (\Exception $e) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
     public function editRow(string $databaseName, string $tableName, string $key): string
     {
         $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);

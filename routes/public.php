@@ -23,8 +23,11 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
         $router->middleware(TableExists::class, function () use ($router) {
             $router->get('/database/{database}/{table}', [App\Controllers\TableController::class, 'show']);
 
-            $router->get('/database/{database}/{table}/{key}', [App\Controllers\TableController::class, 'editRow']);
-            $router->post('/database/{database}/{table}/{key}', [App\Controllers\TableController::class, 'updateRow']);
+            $router->get('/database/{database}/{table}/new', [App\Controllers\TableController::class, 'newRow']);
+            $router->post('/database/{database}/{table}/new', [App\Controllers\TableController::class, 'createRow']);
+
+            $router->get('/database/{database}/{table}/edit/{key}', [App\Controllers\TableController::class, 'editRow']);
+            $router->post('/database/{database}/{table}/edit/{key}', [App\Controllers\TableController::class, 'updateRow']);
         });
     });
 });

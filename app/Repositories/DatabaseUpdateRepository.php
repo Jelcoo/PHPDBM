@@ -11,6 +11,17 @@ class DatabaseUpdateRepository extends DatabaseRepository
         $this->prepareFromSession();
     }
 
+    public function createRow(string $database, string $table, array $data): int
+    {
+        if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
+            return 0;
+        }
+        
+        $queryBuilder = new QueryBuilder($this->getConnection());
+        return $queryBuilder->table($table)
+            ->insert($data);
+    }
+
     public function updateRow(string $database, string $table, string $primaryKey, string $keyValue, array $data): void
     {
         if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {

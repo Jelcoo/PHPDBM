@@ -7,6 +7,7 @@
         <option value="50">50 Results</option>
         <option value="100">100 Results</option>
     </select>
+    <a class="btn btn-primary" href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/new" data-bs-toggle="tooltip" data-bs-title="Create row"><i class="fa-solid fa-plus"></i></a>
 </div>
 <div class="table-responsive mt-2">
     <table class="table table-striped table-bordered">
@@ -23,7 +24,7 @@
                 <tr class="row-<?php echo isset($primaryKey) ? $row[$primaryKey] : 'unknown'; ?>">
                     <?php if ($primaryKey) { ?>
                         <td>
-                            <a class="btn btn-primary btn-sm" href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/<?php echo $row[$primaryKey]; ?>"><i class="fa-solid fa-pencil"></i></a>
+                            <a class="btn btn-primary btn-sm" href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/edit/<?php echo $row[$primaryKey]; ?>"><i class="fa-solid fa-pencil"></i></a>
                         </td>
                     <?php } ?>
                     <?php foreach ($tableColumns as $column) { ?>

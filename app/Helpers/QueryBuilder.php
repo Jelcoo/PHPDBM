@@ -107,6 +107,18 @@ class QueryBuilder
         return empty($result) ? null : $result[0];
     }
 
+    public function insert(array $data): int
+    {
+        $columns = implode(', ', array_keys($data));
+        $placeholders = implode(', ', array_fill(0, count($data), '?'));
+        $sql = "INSERT INTO {$this->table} ($columns) VALUES ($placeholders)";
+        $stmt = $this->pdo->prepare($sql);
+        $values = array_values($data);
+        $stmt->execute($values);
+
+        return $this->pdo->lastInsertId();
+    }
+
     public function update(array $data): int
     {
         $this->updates = $data;
