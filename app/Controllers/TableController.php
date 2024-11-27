@@ -117,7 +117,7 @@ class TableController extends Controller
         if (empty($updateStatement)) {
             return json_encode([
                 'type' => SuccessEnum::WARNING,
-                'message' => 'No rows have changed',
+                'message' => 'No fields have changed',
             ]);
         }
 
