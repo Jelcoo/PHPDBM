@@ -26,6 +26,18 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
         return (int) $statement->fetch(\PDO::FETCH_COLUMN);
     }
 
+    public function getTableSize(string $databaseName, string $tableName): int
+    {
+        if (! $this->useDatabase($databaseName) || ! $this->isValidTableName($tableName)) {
+            return 0;
+        }
+
+        $statement = $this->getConnection()->prepare("SELECT data_length + index_length AS size FROM information_schema.tables WHERE table_schema=:databaseName AND table_name=:tableName;");    
+        $statement->execute(['databaseName' => $databaseName, 'tableName' => $tableName]);
+
+        return (int) $statement->fetch(\PDO::FETCH_COLUMN);
+    }
+
     public function getAllTablesFromDatabase(string $databaseName): array
     {
         if (! $this->useDatabase($databaseName)) {

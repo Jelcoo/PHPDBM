@@ -9,6 +9,8 @@
         <thead>
             <tr>
                 <th scope="col">Table Name</th>
+                <th scope="col">Size</th>
+                <th scope="col">Row Count</th>
             </tr>
         </thead>
         <tbody>
@@ -37,14 +39,24 @@
     });
 
     function tableToTableRow(table) {
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        const a = document.createElement('a');
-        a.href = `/database/${databaseName}/${table}`;
-        a.textContent = table;
-        td.appendChild(a);
-        tr.appendChild(td);
+        const row = document.createElement('tr');
 
-        return tr;
+        const name = document.createElement('td');
+        const a = document.createElement('a');
+        a.href = `/database/${databaseName}/${table.name}`;
+        a.textContent = table.name;
+        name.appendChild(a);
+
+        const size = document.createElement('td');
+        size.textContent = formatBytes(table.size);
+
+        const rowCount = document.createElement('td');
+        rowCount.textContent = table.rowCount;
+
+        row.appendChild(name);
+        row.appendChild(size);
+        row.appendChild(rowCount);
+
+        return row;
     }
 </script>
