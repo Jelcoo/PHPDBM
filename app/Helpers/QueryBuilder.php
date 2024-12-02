@@ -135,7 +135,7 @@ class QueryBuilder
 
         $stmt->execute();
 
-        return $stmt->rowCount(); // Returns the number of rows affected
+        return $stmt->rowCount();
     }
 
     private function buildSelectQuery(): string

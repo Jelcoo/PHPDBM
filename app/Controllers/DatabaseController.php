@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Enum\SuccessEnum;
 use App\Repositories\DatabaseDiscoveryRepository;
 use App\Repositories\DatabaseTableRepository;
 
@@ -33,6 +34,25 @@ class DatabaseController extends Controller
         return $this->pageLoader->setPage('database/view')->render([
             'databaseName' => $databaseName,
             'databaseTables' => $formattedTables,
+        ]);
+    }
+
+    public function newTable(string $databaseName): string
+    {
+        return $this->pageLoader->setPage('database/table/new')->render([
+            'databaseName' => $databaseName,
+        ]);
+    }
+
+    public function createTable(string $databaseName)
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $this->databaseDiscoveryRepository->createDatabaseTable($databaseName, $data['name'], $data['columns']);
+
+        return json_encode([
+            'type' => SuccessEnum::SUCCESS,
+            'message' => json_encode($data),
         ]);
     }
 }

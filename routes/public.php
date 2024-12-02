@@ -20,6 +20,9 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
     $router->middleware(DatabaseExists::class, function () use ($router) {
         $router->get('/database/{database}', [App\Controllers\DatabaseController::class, 'show']);
 
+        $router->get('/database/{database}/new', [App\Controllers\DatabaseController::class, 'newTable']);
+        $router->post('/database/{database}/new', [App\Controllers\DatabaseController::class, 'createTable']);
+
         $router->middleware(TableExists::class, function () use ($router) {
             $router->get('/database/{database}/{table}', [App\Controllers\TableController::class, 'show']);
 

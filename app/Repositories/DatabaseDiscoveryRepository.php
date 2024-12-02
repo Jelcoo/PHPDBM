@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Helpers\SchemaBuilder;
+
 class DatabaseDiscoveryRepository extends DatabaseRepository
 {
     public function __construct()
@@ -50,5 +52,30 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
     public function countDatabaseTables(string $databaseName): int
     {
         return count($this->getAllTablesFromDatabase($databaseName));
+    }
+
+    public function createDatabaseTable(string $databaseName, string $tableName, $columns): void
+    {
+        if (! $this->useDatabase($databaseName) || ! $this->isValidTableName($tableName)) {
+            return;
+        }
+
+        $schemaBuilder = new SchemaBuilder($this->getConnection());
+        $schemaBuilder->table($tableName)->create();
+
+        foreach ($columns as $column) {
+            $options = [];
+            if ($column['default'] !== null) {
+                $options['default'] = $column['default'];
+            }
+            if ($column['isNull'] === false) {
+                $options['nullable'] = false;
+            }
+            if ($column['isAi'] === true) {
+                $options['auto_increment'] = true;
+            }
+            $schemaBuilder->addColumn($column['name'], 'VARCHAR(255)', $options);
+        }
+        $schemaBuilder->execute();
     }
 }
