@@ -1,3 +1,5 @@
+<script src="/assets/js/sqlcolumnutils.js"></script>
+
 <div class="alert d-none" role="alert"></div>
 
 <form id="newTableForm">
@@ -44,9 +46,14 @@
         tr.innerHTML = `
             <td><button type="button" class="btn btn-danger" onclick="this.parentNode.parentNode.remove()"><i class="fa-solid fa-trash"></i></button></td>
             <td><input type="text" class="form-control" data-column-index="${columnCounter}" data-column-field="name" placeholder="Column name" /></td>
-            <td><input type="text" class="form-control" data-column-index="${columnCounter}" data-column-field="type" placeholder="Column type" /></td>
-            <td><input type="text" class="form-control" data-column-index="${columnCounter}" data-column-field="length" placeholder="Column length" /></td>
-            <td><input type="text" class="form-control" data-column-index="${columnCounter}" data-column-field="default" placeholder="Column default" /></td>
+            <td><select class="form-select" data-column-index="${columnCounter}" data-column-field="type">${columnTypeOptions().map(element => element.outerHTML).join('')}</select></td>
+            <td><input type="text" class="form-control" data-column-index="${columnCounter}" data-column-field="length" placeholder="Column length/value" /></td>
+            <td>
+                <select class="form-select" data-column-index="${columnCounter}" data-column-field="default">
+                    <option value="NULL">NULL</option>
+                    <option value="CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</option>
+                </select>
+            </td>
             <td><input type="checkbox" data-column-index="${columnCounter}" data-column-field="isNull" /></td>
             <td><input type="checkbox" data-column-index="${columnCounter}" data-column-field="isAi" /></td>
         `;
@@ -74,6 +81,10 @@
                     return;
                 }
                 dataRow[input.dataset.columnField] = input.value;
+            });
+            const selects = row.querySelectorAll('select');
+            selects.forEach((select) => {
+                dataRow[select.dataset.columnField] = select.value;
             });
             data.columns.push(dataRow);
         });
