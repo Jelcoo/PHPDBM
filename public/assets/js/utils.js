@@ -40,3 +40,30 @@ function formatBytes(bytes, decimals = 2) {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+
+function handleResponse(response) {
+    const statusBanner = document.querySelector('.alert');
+
+    try {
+        const data = JSON.parse(response);
+
+        if (data.type === 'redirect') {
+            statusBanner.classList = 'alert alert-success';
+            
+            setTimeout(() => {
+                window.location.href = data.message;
+            }, 2000);
+            return;
+        } else {
+            const statusClass = data.type === 'success' ? 'alert-success'
+            : data.type === 'warning' ? 'alert-warning'
+            : 'alert-danger';
+            statusBanner.classList = 'alert ' + statusClass;
+            statusBanner.textContent = data.message;
+        }
+    } catch (e) {
+        statusBanner.classList = 'alert alert-danger';
+        statusBanner.textContent = response;
+        return;
+    }
+}

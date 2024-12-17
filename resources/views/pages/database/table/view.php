@@ -33,6 +33,11 @@
                     <?php } ?>
                 </tr>
             <?php } ?>
+            <?php if (count($tableRows['data']) === 0) { ?>
+                <tr>
+                    <td>No rows found</td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
 </div>

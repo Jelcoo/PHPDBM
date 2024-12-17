@@ -48,11 +48,19 @@ class DatabaseController extends Controller
     {
         $data = json_decode(file_get_contents('php://input'), true);
 
+        if (empty($data['name'])) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => 'Table name is required',
+            ]);
+        }
+
         $this->databaseDiscoveryRepository->createDatabaseTable($databaseName, $data['name'], $data['columns']);
 
         return json_encode([
-            'type' => SuccessEnum::SUCCESS,
-            'message' => json_encode($data),
+            'type' => SuccessEnum::REDIRECT,
+            'message' => 'Table created successfully',
+            'redirect' => '/database/' . $databaseName . '/' . $data['name'],
         ]);
     }
 }
