@@ -145,7 +145,7 @@ class QueryBuilder
         } else {
             $columns = empty($this->columns) ? '*' : implode(', ', $this->columns);
         }
-        $sql = "SELECT $columns FROM {$this->table}";
+        $sql = "SELECT $columns FROM `{$this->table}`";
 
         if (!empty($this->conditions)) {
             $sql .= ' WHERE ' . ltrim(implode(' ', $this->conditions));
