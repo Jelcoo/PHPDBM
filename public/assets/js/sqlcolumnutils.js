@@ -27,7 +27,7 @@ function columnTypeOptions(selectedType = null) {
             const option = document.createElement('option');
             option.value = type;    
             option.text = type;
-            if (type.toLowerCase() === selectedType.toLowerCase()) {
+            if (selectedType && type.toLowerCase() === selectedType.toLowerCase()) {
                 option.setAttribute('selected', true);
                 foundSelectedType = true;
             }
