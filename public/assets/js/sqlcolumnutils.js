@@ -17,7 +17,8 @@ const columnTypesSpecial = [
     }
 ];
 
-function columnTypeOptions() {
+function columnTypeOptions(selectedType = null) {
+    let foundSelectedType = false;
     const optionGroups = [];
     columnTypesSpecial.forEach((group) => {
         const optionGroup = document.createElement('optgroup');
@@ -26,6 +27,10 @@ function columnTypeOptions() {
             const option = document.createElement('option');
             option.value = type;    
             option.text = type;
+            if (type.toLowerCase() === selectedType.toLowerCase()) {
+                option.setAttribute('selected', true);
+                foundSelectedType = true;
+            }
             optionGroup.appendChild(option);
         });
         optionGroups.push(optionGroup);

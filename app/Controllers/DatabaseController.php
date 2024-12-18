@@ -63,4 +63,15 @@ class DatabaseController extends Controller
             'redirect' => '/database/' . $databaseName . '/' . $data['name'],
         ]);
     }
+
+    public function editTable(string $databaseName, string $tableName): string
+    {
+        $tableColumns = $this->tableRepository->getTableColumns($databaseName, $tableName);
+
+        return $this->pageLoader->setPage('database/table/edit')->render([
+            'databaseName' => $databaseName,
+            'tableName' => $tableName,
+            'tableColumns' => $tableColumns,
+        ]);
+    }
 }

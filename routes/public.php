@@ -25,6 +25,7 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
 
         $router->middleware(TableExists::class, function () use ($router) {
             $router->get('/database/{database}/{table}', [App\Controllers\TableController::class, 'show']);
+            $router->get('/database/{database}/{table}/edit', [App\Controllers\DatabaseController::class, 'editTable']);
 
             $router->get('/database/{database}/{table}/new', [App\Controllers\TableController::class, 'newRow']);
             $router->post('/database/{database}/{table}/new', [App\Controllers\TableController::class, 'createRow']);
