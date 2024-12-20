@@ -8,7 +8,7 @@ use App\Controllers\ErrorController;
 class Router
 {
     private array $routes = [];
-    private mixed $currentMiddleware = null;
+    private mixed $currentMiddleware = [];
     public Request $request;
     public Response $response;
 
@@ -46,9 +46,9 @@ class Router
 
     public function middleware(mixed $middleware, callable $register): void
     {
-        $this->currentMiddleware = new $middleware();
+        $this->currentMiddleware[] = new $middleware();
         $register();
-        $this->currentMiddleware = null;
+        array_pop($this->currentMiddleware);
     }
 
     public function resolve(): void

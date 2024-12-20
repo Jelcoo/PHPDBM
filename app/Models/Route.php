@@ -12,12 +12,12 @@ class Route
     public array $middleware;
     public array $params = [];
 
-    public function __construct(string $uri, string $method, array $callback, ?Middleware $middleware = null)
+    public function __construct(string $uri, string $method, array $callback, array $middleware)
     {
         $this->uri = $uri;
         $this->method = $method;
         $this->callback = $callback;
-        $this->middleware = $middleware ? [$middleware] : [];
+        $this->middleware = $middleware;
     }
 
     public function executeMiddleware(array $params = []): bool
