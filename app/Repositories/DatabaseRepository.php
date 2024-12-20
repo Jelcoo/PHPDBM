@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Application\Session;
+use App\Exceptions\InvalidDatabaseException;
 
 class DatabaseRepository
 {
@@ -11,6 +12,29 @@ class DatabaseRepository
     private string $port = '';
     private string $username = '';
     private string $password = '';
+
+    public string $database = '';
+    public string $table = '';
+
+    public function useDatabase(string $database): self
+    {
+        if (! $this->isValidDatabaseName($database)) {
+            throw new InvalidDatabaseException();
+        }
+        $this->database = $database;
+        $this->useDB($database);
+
+        return $this;
+    }
+    public function useTable(string $table): self
+    {
+        if (! $this->isValidTableName($table)) {
+            throw new InvalidDatabaseException();
+        }
+        $this->table = $table;
+        
+        return $this;
+    }
 
     public function prepare(string $ipAddress = '', string $port = '', string $username = '', string $password = ''): void
     {
@@ -52,14 +76,9 @@ class DatabaseRepository
         return $this->pdoConnection;
     }
 
-    protected function useDatabase(string $databaseName): bool
+    private function useDB(string $databaseName): void
     {
-        if (! $this->isValidDatabaseName($databaseName)) {
-            return false;
-        }
         $this->getConnection()->exec("USE `$databaseName`");
-
-        return true;
     }
 
     public static function isValidDatabaseName(string $databaseName): bool

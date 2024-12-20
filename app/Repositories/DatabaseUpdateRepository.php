@@ -4,6 +4,10 @@ namespace App\Repositories;
 
 use App\Helpers\QueryBuilder;
 
+/**
+ * @method self useDatabase(string $database)
+ * @method self useTable(string $table)
+ */
 class DatabaseUpdateRepository extends DatabaseRepository
 {
     public function __construct()
@@ -11,25 +15,17 @@ class DatabaseUpdateRepository extends DatabaseRepository
         $this->prepareFromSession();
     }
 
-    public function createRow(string $database, string $table, array $data): int
+    public function createRow(array $data): int
     {
-        if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
-            return 0;
-        }
-        
         $queryBuilder = new QueryBuilder($this->getConnection());
-        return $queryBuilder->table($table)
+        return $queryBuilder->table($this->table)
             ->insert($data);
     }
 
-    public function updateRow(string $database, string $table, string $primaryKey, string $keyValue, array $data): void
+    public function updateRow(string $primaryKey, string $keyValue, array $data): void
     {
-        if (! $this->useDatabase($database) || ! $this->isValidTableName($table)) {
-            return;
-        }
-
         $queryBuilder = new QueryBuilder($this->getConnection());
-        $queryBuilder->table($table)
+        $queryBuilder->table($this->table)
             ->where($primaryKey, '=', $keyValue)
             ->update($data);
     }

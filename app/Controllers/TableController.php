@@ -22,17 +22,19 @@ class TableController extends Controller
 
     public function show(string $databaseName, string $tableName): string
     {
+        $this->databaseTableRepository->useDatabase($databaseName)->useTable($tableName);
+
         $page = $_GET['page'] ?? 1;
         $perPage = $_GET['size'] ?? 25;
         $search = $_GET['search'] ?? null;
 
-        $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
+        $tableColumns = $this->databaseTableRepository->getTableColumns();
         if ($search) {
-            $tableRows = $this->databaseTableRepository->getPagedSearchedRowsForTable($databaseName, $tableName, $page, $perPage, $search);
-            $totalRecords = $this->databaseTableRepository->countSearchedRowsForTable($databaseName, $tableName, $search);
+            $tableRows = $this->databaseTableRepository->getPagedSearchedRowsForTable($page, $perPage, $search);
+            $totalRecords = $this->databaseTableRepository->countSearchedRowsForTable($search);
         } else {
-            $tableRows = $this->databaseTableRepository->getPagedRowsForTable($databaseName, $tableName, $page, $perPage);
-            $totalRecords = $this->databaseTableRepository->countRowsForTable($databaseName, $tableName);
+            $tableRows = $this->databaseTableRepository->getPagedRowsForTable($page, $perPage);
+            $totalRecords = $this->databaseTableRepository->countRowsForTable();
         }
 
         $tableRows = Pagination::paginate($tableRows, $totalRecords, $perPage, $page);
@@ -48,7 +50,8 @@ class TableController extends Controller
 
     public function newRow(string $databaseName, string $tableName): string
     {
-        $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
+        $this->databaseTableRepository->useDatabase($databaseName)->useTable($tableName);
+        $tableColumns = $this->databaseTableRepository->getTableColumns();
 
         return $this->pageLoader->setPage('database/table/row/new')->render([
             'databaseName' => $databaseName,
@@ -59,6 +62,8 @@ class TableController extends Controller
 
     public function createRow(string $databaseName, string $tableName)
     {
+        $this->databaseTableRepository->useDatabase($databaseName)->useTable($tableName);
+
         $data = json_decode(file_get_contents('php://input'), true);
 
         $createStatement = [];
@@ -70,7 +75,7 @@ class TableController extends Controller
         }
 
         try {
-            $insertedId = $this->databaseUpdateRepository->createRow($databaseName, $tableName, $createStatement);
+            $insertedId = $this->databaseUpdateRepository->createRow($createStatement);
 
             return json_encode([
                 'type' => SuccessEnum::SUCCESS,
@@ -86,9 +91,11 @@ class TableController extends Controller
 
     public function editRow(string $databaseName, string $tableName, string $key): string
     {
-        $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
+        $this->databaseTableRepository->useDatabase($databaseName)->useTable($tableName);
+
+        $tableColumns = $this->databaseTableRepository->getTableColumns();
         $primaryKey = DatabaseHelpers::getPrimaryKey($tableColumns);
-        $tableRow = $this->databaseTableRepository->getRowByKey($databaseName, $tableName, $primaryKey, $key);
+        $tableRow = $this->databaseTableRepository->getRowByKey($primaryKey, $key);
 
         return $this->pageLoader->setPage('database/table/row/edit')->render([
             'databaseName' => $databaseName,
@@ -101,11 +108,13 @@ class TableController extends Controller
 
     public function updateRow(string $databaseName, string $tableName, string $key)
     {
+        $this->databaseTableRepository->useDatabase($databaseName)->useTable($tableName);
+
         $data = json_decode(file_get_contents('php://input'), true);
 
-        $tableColumns = $this->databaseTableRepository->getTableColumns($databaseName, $tableName);
+        $tableColumns = $this->databaseTableRepository->getTableColumns();
         $primaryKey = DatabaseHelpers::getPrimaryKey($tableColumns);
-        $tableRow = $this->databaseTableRepository->getRowByKey($databaseName, $tableName, $primaryKey, $key);
+        $tableRow = $this->databaseTableRepository->getRowByKey($primaryKey, $key);
 
         $updateStatement = [];
         foreach ($data as $rowField) {
@@ -122,7 +131,7 @@ class TableController extends Controller
         }
 
         try {
-            $this->databaseUpdateRepository->updateRow($databaseName, $tableName, $primaryKey, $key, $updateStatement);
+            $this->databaseUpdateRepository->updateRow($primaryKey, $key, $updateStatement);
         } catch (\Exception $e) {
             return json_encode([
                 'type' => SuccessEnum::FAILURE,

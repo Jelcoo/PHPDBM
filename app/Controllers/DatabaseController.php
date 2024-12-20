@@ -20,14 +20,18 @@ class DatabaseController extends Controller
 
     public function show(string $databaseName): string
     {
-        $databaseTables = $this->databaseDiscoveryRepository->getAllTablesFromDatabase($databaseName);
+        $this->databaseDiscoveryRepository->useDatabase($databaseName);
+        $databaseTables = $this->databaseDiscoveryRepository->getAllTablesFromDatabase();
 
         $formattedTables = [];
         foreach ($databaseTables as $table) {
+            $this->databaseDiscoveryRepository->useDatabase($databaseName)->useTable($table);
+            $this->tableRepository->useDatabase($databaseName)->useTable($table);
+
             $formattedTables[] = [
                 'name' => $table,
-                'size' => $this->databaseDiscoveryRepository->getTableSize($databaseName, $table),
-                'rowCount' => $this->tableRepository->countRowsForTable($databaseName, $table),
+                'size' => $this->databaseDiscoveryRepository->getTableSize(),
+                'rowCount' => $this->tableRepository->countRowsForTable(),
             ];
         }
 
@@ -55,7 +59,9 @@ class DatabaseController extends Controller
             ]);
         }
 
-        $this->databaseDiscoveryRepository->createDatabaseTable($databaseName, $data['name'], $data['columns']);
+        $this->databaseDiscoveryRepository
+            ->useDatabase($databaseName)
+            ->createDatabaseTable($data['name'], $data['columns']);
 
         return json_encode([
             'type' => SuccessEnum::REDIRECT,
@@ -66,7 +72,10 @@ class DatabaseController extends Controller
 
     public function editTable(string $databaseName, string $tableName): string
     {
-        $tableColumns = $this->tableRepository->getTableColumns($databaseName, $tableName);
+        $tableColumns = $this->tableRepository
+            ->useDatabase($databaseName)
+            ->useTable($tableName)
+            ->getTableColumns();
 
         return $this->pageLoader->setPage('database/table/edit')->render([
             'databaseName' => $databaseName,

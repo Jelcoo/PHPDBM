@@ -23,8 +23,8 @@ class HomeController extends Controller
         foreach ($databases as $database) {
             $formattedDatabases[] = [
                 'name' => $database,
-                'size' => $this->databaseDiscoveryRepository->getDatabaseSize($database),
-                'tableCount' => $this->databaseDiscoveryRepository->countDatabaseTables($database),
+                'size' => $this->databaseDiscoveryRepository->useDatabase($database)->getDatabaseSize(),
+                'tableCount' => $this->databaseDiscoveryRepository->useDatabase($database)->countDatabaseTables(),
             ];
         }
 

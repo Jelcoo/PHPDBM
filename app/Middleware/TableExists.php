@@ -18,6 +18,6 @@ class TableExists implements Middleware
         $databaseName = $params[0] ?? null;
         $tableName = $params[1] ?? null;
 
-        return in_array($tableName, $this->databaseDiscoveryRepository->getAllTablesFromDatabase($databaseName));
+        return in_array($tableName, $this->databaseDiscoveryRepository->useDatabase($databaseName)->getAllTablesFromDatabase());
     }
 }
