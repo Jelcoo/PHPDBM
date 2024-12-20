@@ -109,6 +109,7 @@ class TableController extends Controller
     public function updateRow(string $databaseName, string $tableName, string $key)
     {
         $this->databaseTableRepository->useDatabase($databaseName)->useTable($tableName);
+        $this->databaseUpdateRepository->useDatabase($databaseName)->useTable($tableName);
 
         $data = json_decode(file_get_contents('php://input'), true);
 

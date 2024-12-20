@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use App\Exceptions\InvalidTableException;
+
 enum QueryType
 {
     case QUERY_TYPE_ALL;
@@ -27,6 +29,9 @@ class QueryBuilder
 
     public function table(string $table): self
     {
+        if (empty($table)) {
+            throw new InvalidTableException();
+        }
         $this->table = $table;
 
         return $this;
