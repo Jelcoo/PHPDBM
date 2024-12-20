@@ -30,7 +30,6 @@
     let columnCounter = 0;
 
     tableColumns.forEach((column) => {
-        console.log(column)
         const type = column.Type.match(/^\w+/)[0];
         const lengthArray = column.Type.match(/\((\d+)\)/);
         const length = lengthArray ? lengthArray[1] : "";
@@ -45,10 +44,7 @@
             <td><select class="form-select" data-column-index="${columnCounter}" data-column-field="type">${columnTypeOptions(type).map(element => element.outerHTML).join('')}</select></td>
             <td><input type="text" class="form-control" data-column-index="${columnCounter}" data-column-field="length" placeholder="Column length/value" value="${length}" /></td>
             <td>
-                <select class="form-select" data-column-index="${columnCounter}" data-column-field="default" value="${column.Default}">
-                    <option value="NULL">NULL</option>
-                    <option value="CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</option>
-                </select>
+                ${columnDefaultOptions(column, columnCounter).outerHTML}
             </td>
             <td><input type="checkbox" data-column-index="${columnCounter}" data-column-field="isNull" ${column.Null === 'YES' ? 'checked' : ''} /></td>
             <td><input type="checkbox" data-column-index="${columnCounter}" data-column-field="isAutoIncrement" ${column.Extra === 'auto_increment' ? 'checked' : ''} /></td>
