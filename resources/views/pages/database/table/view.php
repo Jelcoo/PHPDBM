@@ -1,4 +1,11 @@
-<h1><a href="/database/<?php echo $databaseName; ?>"><?php echo $databaseName; ?></a> - <?php echo $tableName; ?></h1>
+<nav style="--bs-breadcrumb-divider: '>';">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/database/<?php echo $databaseName; ?>"><?php echo $databaseName; ?></a></li>
+        <li class="breadcrumb-item active"><?php echo $tableName; ?></li>
+    </ol>
+</nav>
+
 <div class="d-flex align-items-center gap-2">
     <input class="form-control" id="search" type="text" placeholder="Search..." autofocus>
     <select class="form-select w-auto" id="resultsSelector">
@@ -43,7 +50,7 @@
 </div>
 <div class="d-flex justify-content-between">
     <p>Showing page <?php echo $tableRows['pages']['current']; ?> of <?php echo $tableRows['pages']['total']; ?></p>
-    <nav aria-label="Table navigation">
+    <nav>
         <ul class="pagination justify-content-end">
             <li class="page-item">
                 <button id="previous" class="page-link" tabindex="-1">Previous</button>

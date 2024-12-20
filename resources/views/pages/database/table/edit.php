@@ -1,6 +1,14 @@
 <script src="/assets/js/sqlcolumnutils.js"></script>
 
-<h1><a href="/database/<?php echo $databaseName; ?>"><?php echo $databaseName; ?></a> - <a href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>"><?php echo $tableName; ?></a></h1>
+<nav style="--bs-breadcrumb-divider: '>';">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/database/<?php echo $databaseName; ?>"><?php echo $databaseName; ?></a></li>
+        <li class="breadcrumb-item"><a href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>"><?php echo $tableName; ?></a></li>
+        <li class="breadcrumb-item active">Edit</li>
+    </ol>
+</nav>
+
 <div class="alert d-none" role="alert"></div>
 <form id="editTableForm">
     <span>Table columns</span>

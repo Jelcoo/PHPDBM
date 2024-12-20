@@ -1,4 +1,9 @@
-<h1><?php echo $databaseName; ?></h1>
+<nav style="--bs-breadcrumb-divider: '>';">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active"><?php echo $databaseName; ?></li>
+    </ol>
+</nav>
 
 <div class="d-flex align-items-center gap-2">
     <input class="form-control" id="search" type="text" placeholder="Search..." autofocus>

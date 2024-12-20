@@ -1,4 +1,12 @@
-<h1><a href="/database/<?php echo $databaseName; ?>"><?php echo $databaseName; ?></a> - <a href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>"><?php echo $tableName; ?></a></h1>
+<nav style="--bs-breadcrumb-divider: '>';">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/database/<?php echo $databaseName; ?>"><?php echo $databaseName; ?></a></li>
+        <li class="breadcrumb-item"><a href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>"><?php echo $tableName; ?></a></li>
+        <li class="breadcrumb-item active">New row</li>
+    </ol>
+</nav>
+
 <div class="alert d-none" role="alert"></div>
 <table class="table table-striped table-bordered">
     <thead>

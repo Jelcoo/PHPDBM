@@ -37,7 +37,7 @@ $loggedIn = Session::isValidSession();
             </a>
 
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Home</a></li>
+                <li class="nav-item"><a href="/" class="nav-link active">Home</a></li>
                 <?php if ($loggedIn) { ?>
                     <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
                 <?php } else { ?>
