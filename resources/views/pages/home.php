@@ -5,13 +5,13 @@
     <input class="form-control" id="search" type="text" placeholder="Search..." autofocus>
 </div>
 
-<div class="table-responsive">
-    <table class="table table-striped">
+<div class="table-responsive mt-2">
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th scope="col">Database Name</th>
-                <th scope="col">Size</th>
-                <th scope="col">Table Count</th>
+                <th>Database Name</th>
+                <th>Size</th>
+                <th>Table Count</th>
             </tr>
         </thead>
         <tbody>
