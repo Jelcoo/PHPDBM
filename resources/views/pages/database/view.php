@@ -10,13 +10,14 @@
     <a class="btn btn-primary" href="/database/<?php echo $databaseName; ?>/new" data-bs-toggle="tooltip" data-bs-title="Create table"><i class="fa-solid fa-plus"></i></a>
 </div>
 
-<div class="table-responsive">
-    <table class="table table-striped">
+<div class="table-responsive mt-2">
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th scope="col">Table Name</th>
-                <th scope="col">Size</th>
-                <th scope="col">Row Count</th>
+                <th></th>
+                <th>Table Name</th>
+                <th>Size</th>
+                <th>Row Count</th>
             </tr>
         </thead>
         <tbody>
@@ -47,11 +48,21 @@
     function tableToTableRow(table) {
         const row = document.createElement('tr');
 
+        const edit = document.createElement('td');
+        const editA = document.createElement('a');
+        editA.className = 'btn btn-primary btn-sm';
+        editA.href = `/database/${databaseName}/${table.name}/edit`;
+        editA.innerHTML = '<i class="fa-solid fa-pencil"></i>';
+        editA.setAttribute('data-bs-toggle', 'tooltip');
+        editA.setAttribute('data-bs-title', 'Edit table');
+        edit.appendChild(editA);
+        row.appendChild(edit);
+
         const name = document.createElement('td');
-        const a = document.createElement('a');
-        a.href = `/database/${databaseName}/${table.name}`;
-        a.textContent = table.name;
-        name.appendChild(a);
+        const nameA = document.createElement('a');
+        nameA.href = `/database/${databaseName}/${table.name}`;
+        nameA.textContent = table.name;
+        name.appendChild(nameA);
 
         const size = document.createElement('td');
         size.textContent = formatBytes(table.size);
