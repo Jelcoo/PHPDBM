@@ -19,5 +19,8 @@
         "phpstan": "vendor/bin/phpstan",
         "phpcs:check": "vendor/bin/php-cs-fixer fix --verbose --dry-run --diff",
         "phpcs:fix": "vendor/bin/php-cs-fixer fix"
+    },
+    "require": {
+        "spatie/db-dumper": "^3.7"
     }
 }

@@ -4,18 +4,21 @@ namespace App\Controllers;
 
 use App\Enum\SuccessEnum;
 use App\Repositories\DatabaseDiscoveryRepository;
+use App\Repositories\DatabaseExportRepository;
 use App\Repositories\DatabaseTableRepository;
 
 class DatabaseController extends Controller
 {
     private DatabaseDiscoveryRepository $databaseDiscoveryRepository;
     private DatabaseTableRepository $tableRepository;
+    private DatabaseExportRepository $databaseExportRepository;
 
     public function __construct()
     {
         parent::__construct();
         $this->databaseDiscoveryRepository = new DatabaseDiscoveryRepository();
         $this->tableRepository = new DatabaseTableRepository();
+        $this->databaseExportRepository = new DatabaseExportRepository();
     }
 
     public function show(string $databaseName): string
@@ -39,6 +42,19 @@ class DatabaseController extends Controller
             'databaseName' => $databaseName,
             'databaseTables' => $formattedTables,
         ]);
+    }
+
+    public function export(string $databaseName): string
+    {
+        $this->databaseExportRepository->prepare($_SESSION['ip_address'], $_SESSION['port'], $_SESSION['username'], $_SESSION['password'], $databaseName);
+
+        $exportPath = $this->databaseExportRepository->exportDatabase();
+        $fileName = basename($exportPath);
+
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        readfile($exportPath);
+        exit;
     }
 
     public function newTable(string $databaseName): string

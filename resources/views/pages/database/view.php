@@ -7,6 +7,7 @@
 
 <div class="d-flex align-items-center gap-2">
     <input class="form-control" id="search" type="text" placeholder="Search..." autofocus>
+    <a class="btn btn-primary" href="/database/<?php echo $databaseName; ?>/export" data-bs-toggle="tooltip" data-bs-title="Export database (SQL script)"><i class="fa-solid fa-file-export"></i></a>
     <a class="btn btn-primary" href="/database/<?php echo $databaseName; ?>/new" data-bs-toggle="tooltip" data-bs-title="Create table"><i class="fa-solid fa-plus"></i></a>
 </div>
 
