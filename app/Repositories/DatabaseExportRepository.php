@@ -2,8 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Helpers\QueryBuilder;
-
 class DatabaseExportRepository
 {
     private string $host = '';
@@ -37,6 +35,26 @@ class DatabaseExportRepository
             ->setUserName($this->username)
             ->setPassword($this->password)
             ->setDbName($this->database)
+            ->dumpToFile($fullPath);
+
+        return $fullPath;
+    }
+
+    public function exportTable(): string
+    {
+        $now = date('Y-m-d H:i:s');
+        $exportName = "Export of {$this->table} $now.sql";
+        $dir = __DIR__ . '/../../storage/exports';
+        $fullPath = $dir . '/' . $exportName;
+
+        \Spatie\DbDumper\Databases\MySql::create()
+            ->setSkipSsl(true)
+            ->setHost($this->host)
+            ->setPort($this->port)
+            ->setUserName($this->username)
+            ->setPassword($this->password)
+            ->setDbName($this->database)
+            ->includeTables([$this->table])
             ->dumpToFile($fullPath);
 
         return $fullPath;

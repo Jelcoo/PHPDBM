@@ -14,6 +14,7 @@
         <option value="50">50 Results</option>
         <option value="100">100 Results</option>
     </select>
+    <a class="btn btn-primary" href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/export" data-bs-toggle="tooltip" data-bs-title="Export table (SQL script)"><i class="fa-solid fa-file-export"></i></a>
     <a class="btn btn-primary" href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/edit" data-bs-toggle="tooltip" data-bs-title="Edit table"><i class="fa-solid fa-pencil"></i></a>
     <a class="btn btn-primary" href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/new" data-bs-toggle="tooltip" data-bs-title="Create row"><i class="fa-solid fa-plus"></i></a>
 </div>

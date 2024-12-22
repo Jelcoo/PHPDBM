@@ -7,17 +7,20 @@ use App\Helpers\Pagination;
 use App\Repositories\DatabaseTableRepository;
 use App\Repositories\DatabaseUpdateRepository;
 use App\Enum\SuccessEnum;
+use App\Repositories\DatabaseExportRepository;
 
 class TableController extends Controller
 {
     private DatabaseTableRepository $databaseTableRepository;
     private DatabaseUpdateRepository $databaseUpdateRepository;
+    private DatabaseExportRepository $databaseExportRepository;
 
     public function __construct()
     {
         parent::__construct();
         $this->databaseTableRepository = new DatabaseTableRepository();
         $this->databaseUpdateRepository = new DatabaseUpdateRepository();
+        $this->databaseExportRepository = new DatabaseExportRepository();
     }
 
     public function show(string $databaseName, string $tableName): string
@@ -144,5 +147,18 @@ class TableController extends Controller
             'type' => SuccessEnum::SUCCESS,
             'message' => 'Row updated successfully',
         ]);
+    }
+
+    public function export(string $databaseName, string $tableName): string
+    {
+        $this->databaseExportRepository->prepare($_SESSION['ip_address'], $_SESSION['port'], $_SESSION['username'], $_SESSION['password'], $databaseName, $tableName);
+
+        $exportPath = $this->databaseExportRepository->exportTable();
+        $fileName = basename($exportPath);
+
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        readfile($exportPath);
+        exit;
     }
 }
