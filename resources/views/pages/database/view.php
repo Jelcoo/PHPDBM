@@ -22,6 +22,11 @@
             </tr>
         </thead>
         <tbody>
+            <?php if (count($databaseTables) === 0) { ?>
+                <tr>
+                    <td colspan="100%">No tables found</td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
 </div>

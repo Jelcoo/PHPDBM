@@ -45,7 +45,7 @@
             <?php } ?>
             <?php if (count($tableRows['data']) === 0) { ?>
                 <tr>
-                    <td colspan="<?php echo $primaryKey ? count($tableColumns) + 1 : count($tableColumns); ?>">No rows found</td>
+                    <td colspan="100%">No rows found</td>
                 </tr>
             <?php } ?>
         </tbody>
