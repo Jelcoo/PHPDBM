@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\InvalidDatabaseException;
 use App\Helpers\SchemaBuilder;
 
 /**
@@ -44,6 +45,14 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
     public function countDatabaseTables(): int
     {
         return count($this->getAllTablesFromDatabase());
+    }
+
+    public function createDatabase(string $databaseName): void
+    {
+        if (!$this->isValidDatabaseName($databaseName)) {
+            throw new InvalidDatabaseException();
+        }
+        $this->getConnection()->query('CREATE DATABASE ' . $databaseName);
     }
 
     public function createDatabaseTable(string $tableName, $columns): void

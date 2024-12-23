@@ -15,11 +15,14 @@ $router->middleware(EnsureNotLoggedIn::class, function () use ($router) {
 $router->middleware(EnsureLoggedIn::class, function () use ($router) {
     $router->get('/', [App\Controllers\HomeController::class, 'index']);
 
+    $router->get('/database/new', [App\Controllers\DatabaseController::class, 'newDatabase']);
+    $router->post('/database/new', [App\Controllers\DatabaseController::class, 'createDatabase']);
+
     $router->get('/logout', [App\Controllers\LoginController::class, 'logout']);
 
     $router->middleware(DatabaseExists::class, function () use ($router) {
         $router->get('/database/{database}', [App\Controllers\DatabaseController::class, 'show']);
-        
+
         $router->get('/database/{database}/export', [App\Controllers\DatabaseController::class, 'export']);
 
         $router->get('/database/{database}/new', [App\Controllers\DatabaseController::class, 'newTable']);
@@ -28,7 +31,7 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
         $router->middleware(TableExists::class, function () use ($router) {
             $router->get('/database/{database}/{table}', [App\Controllers\TableController::class, 'show']);
             $router->get('/database/{database}/{table}/edit', [App\Controllers\DatabaseController::class, 'editTable']);
-        
+
             $router->get('/database/{database}/{table}/export', [App\Controllers\TableController::class, 'export']);
 
             $router->get('/database/{database}/{table}/new', [App\Controllers\TableController::class, 'newRow']);

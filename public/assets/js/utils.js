@@ -45,22 +45,24 @@ function handleResponse(response) {
     const statusBanner = document.querySelector('.alert');
 
     try {
-        const data = JSON.parse(response);
+        response.json()
+            .then((data) => {
+                if (data.type === 'redirect') {
+                    statusBanner.classList = 'alert alert-success';
+                    statusBanner.textContent = data.message;
 
-        if (data.type === 'redirect') {
-            statusBanner.classList = 'alert alert-success';
-            
-            setTimeout(() => {
-                window.location.href = data.message;
-            }, 2000);
-            return;
-        } else {
-            const statusClass = data.type === 'success' ? 'alert-success'
-            : data.type === 'warning' ? 'alert-warning'
-            : 'alert-danger';
-            statusBanner.classList = 'alert ' + statusClass;
-            statusBanner.textContent = data.message;
-        }
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 2000);
+                    return;
+                } else {
+                    const statusClass = data.type === 'success' ? 'alert-success'
+                    : data.type === 'warning' ? 'alert-warning'
+                    : 'alert-danger';
+                    statusBanner.classList = 'alert ' + statusClass;
+                    statusBanner.textContent = data.message;
+                }
+            });
     } catch (e) {
         statusBanner.classList = 'alert alert-danger';
         statusBanner.textContent = response;

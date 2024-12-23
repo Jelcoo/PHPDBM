@@ -44,6 +44,38 @@ class DatabaseController extends Controller
         ]);
     }
 
+    public function newDatabase(): string
+    {
+        return $this->pageLoader->setPage('database/new')->render();
+    }
+
+    public function createDatabase(): string
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (empty($data['name'])) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => 'Database name is required',
+            ]);
+        }
+
+        try {
+            $this->databaseDiscoveryRepository->createDatabase($data['name']);
+        } catch (\Exception $e) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => $e->getMessage(),
+            ]);
+        }
+
+        return json_encode([
+            'type' => SuccessEnum::REDIRECT,
+            'message' => 'Database created successfully',
+            'redirect' => '/database/' . $data['name'],
+        ]);
+    }
+
     public function export(string $databaseName): string
     {
         $this->databaseExportRepository->prepare($_SESSION['ip_address'], $_SESSION['port'], $_SESSION['username'], $_SESSION['password'], $databaseName);

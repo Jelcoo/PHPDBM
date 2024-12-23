@@ -3,6 +3,7 @@
 
 <div class="d-flex align-items-center gap-2">
     <input class="form-control" id="search" type="text" placeholder="Search..." autofocus>
+    <a class="btn btn-primary" href="/database/new" data-bs-toggle="tooltip" data-bs-title="Create database"><i class="fa-solid fa-plus"></i></a>
 </div>
 
 <div class="table-responsive mt-2">
