@@ -17,6 +17,8 @@ class HomeController extends Controller
     public function index(): string
     {
         $username = $_SESSION['username'];
+        $ipAddress = $_SESSION['ip_address'];
+        $port = $_SESSION['port'];
         $databases = $this->databaseDiscoveryRepository->getAllDatabases();
 
         $formattedDatabases = [];
@@ -29,7 +31,9 @@ class HomeController extends Controller
         }
 
         return $this->pageLoader->setPage('home')->render([
-            'user' => $username,
+            'username' => $username,
+            'ipAddress' => $ipAddress,
+            'port' => $port,
             'databases' => $formattedDatabases,
         ]);
     }
