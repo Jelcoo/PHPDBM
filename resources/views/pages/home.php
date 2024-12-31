@@ -18,6 +18,11 @@
             </tr>
         </thead>
         <tbody>
+            <?php if (count($databases) === 0) { ?>
+                <tr>
+                    <td colspan="100%">No databases found</td>
+                </tr>
+            <?php } ?>
         </tbody>
     </table>
 </div>
