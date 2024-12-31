@@ -75,4 +75,9 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
         }
         $schemaBuilder->execute();
     }
+
+    public function deleteDatabase(string $databaseName): void
+    {
+        $this->getConnection()->query('DROP DATABASE ' . $databaseName);
+    }
 }

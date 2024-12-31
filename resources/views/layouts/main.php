@@ -25,6 +25,9 @@ $loggedIn = Session::isValidSession();
             });
         </script>
 
+        <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.15.3/dist/sweetalert2.all.min.js "></script>
+        <link href=" https://cdn.jsdelivr.net/npm/sweetalert2@11.15.3/dist/sweetalert2.min.css " rel="stylesheet">
+
         <script src="/assets/js/utils.js"></script>
         <script src="/assets/js/tableutils.js"></script>
     </head>

@@ -10,6 +10,7 @@
 </nav>
 
 <div class="alert d-none" role="alert"></div>
+
 <form id="editTableForm">
     <span>Table columns</span>
     <table class="table table-striped table-bordered">

@@ -22,6 +22,8 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
 
     $router->middleware(DatabaseExists::class, function () use ($router) {
         $router->get('/database/{database}', [App\Controllers\DatabaseController::class, 'show']);
+        
+        $router->post('/database/{database}/delete', [App\Controllers\DatabaseController::class, 'delete']);
 
         $router->get('/database/{database}/export', [App\Controllers\DatabaseController::class, 'export']);
 

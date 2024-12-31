@@ -1,7 +1,9 @@
 <p>Welcome to the homepage <?php echo $user; ?></p>
 <p>Here are your databases</p>
 
-<div class="d-flex align-items-center gap-2">
+<div class="alert d-none" role="alert"></div>
+
+<div class="d-flex align-items-center gap-2 mt-2">
     <input class="form-control" id="search" type="text" placeholder="Search..." autofocus>
     <a class="btn btn-primary" href="/database/new" data-bs-toggle="tooltip" data-bs-title="Create database"><i class="fa-solid fa-plus"></i></a>
 </div>
@@ -10,6 +12,7 @@
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
+                <th></th>
                 <th>Database Name</th>
                 <th>Size</th>
                 <th>Table Count</th>
@@ -42,6 +45,32 @@
     function dbToTableRow(database) {
         const row = document.createElement('tr');
 
+        const deleteTd = document.createElement('td');
+        const deleteA = document.createElement('a');
+        deleteA.className = 'btn btn-danger btn-sm';
+        deleteA.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        deleteA.setAttribute('data-bs-toggle', 'tooltip');
+        deleteA.setAttribute('data-bs-title', 'Drop database');
+        deleteA.addEventListener('click', async (e) => {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you sure you want to drop the database?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#dd3333',
+                confirmButtonText: 'Drop'
+            }).then((result) => {
+                window.scrollTo(0, 0);
+                fetch(`/database/${database.name}/delete`, {
+                    method: 'POST'
+                })
+                .then(handleResponse);
+            });
+        });
+        deleteTd.appendChild(deleteA);
+
         const name = document.createElement('td');
         const a = document.createElement('a');
         a.href = `/database/${database.name}`;
@@ -54,6 +83,7 @@
         const tableCount = document.createElement('td');
         tableCount.textContent = database.tableCount;
 
+        row.appendChild(deleteTd);
         row.appendChild(name);
         row.appendChild(size);
         row.appendChild(tableCount);

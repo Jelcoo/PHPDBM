@@ -131,4 +131,15 @@ class DatabaseController extends Controller
             'tableColumns' => $tableColumns,
         ]);
     }
+
+    public function delete(string $databaseName): string
+    {
+        $this->databaseDiscoveryRepository->deleteDatabase($databaseName);
+
+        return json_encode([
+            'type' => SuccessEnum::REDIRECT,
+            'message' => 'Database deleted successfully',
+            'redirect' => '/',
+        ]);
+    }
 }

@@ -62,7 +62,6 @@
         editA.setAttribute('data-bs-toggle', 'tooltip');
         editA.setAttribute('data-bs-title', 'Edit table');
         edit.appendChild(editA);
-        row.appendChild(edit);
 
         const name = document.createElement('td');
         const nameA = document.createElement('a');
@@ -76,6 +75,7 @@
         const rowCount = document.createElement('td');
         rowCount.textContent = table.rowCount;
 
+        row.appendChild(edit);
         row.appendChild(name);
         row.appendChild(size);
         row.appendChild(rowCount);
