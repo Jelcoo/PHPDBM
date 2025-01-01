@@ -42,7 +42,7 @@ class TableController extends Controller
 
         $tableRows = Pagination::paginate($tableRows, $totalRecords, $perPage, $page);
 
-        return $this->pageLoader->setPage('database/table/view')->render([
+        return $this->pageLoader->setPage('database/table/viewTable')->render([
             'databaseName' => $databaseName,
             'tableName' => $tableName,
             'tableColumns' => $tableColumns,
@@ -56,7 +56,7 @@ class TableController extends Controller
         $this->databaseTableRepository->useDatabase($databaseName)->useTable($tableName);
         $tableColumns = $this->databaseTableRepository->getTableColumns();
 
-        return $this->pageLoader->setPage('database/table/row/new')->render([
+        return $this->pageLoader->setPage('database/table/row/newRow')->render([
             'databaseName' => $databaseName,
             'tableName' => $tableName,
             'tableColumns' => $tableColumns,
@@ -100,7 +100,7 @@ class TableController extends Controller
         $primaryKey = DatabaseHelpers::getPrimaryKey($tableColumns);
         $tableRow = $this->databaseTableRepository->getRowByKey($primaryKey, $key);
 
-        return $this->pageLoader->setPage('database/table/row/edit')->render([
+        return $this->pageLoader->setPage('database/table/row/editRow')->render([
             'databaseName' => $databaseName,
             'tableName' => $tableName,
             'primaryKey' => $key,

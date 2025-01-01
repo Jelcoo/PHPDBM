@@ -38,7 +38,7 @@ class DatabaseController extends Controller
             ];
         }
 
-        return $this->pageLoader->setPage('database/view')->render([
+        return $this->pageLoader->setPage('database/viewDatabase')->render([
             'databaseName' => $databaseName,
             'databaseTables' => $formattedTables,
         ]);
@@ -46,7 +46,7 @@ class DatabaseController extends Controller
 
     public function newDatabase(): string
     {
-        return $this->pageLoader->setPage('database/new')->render();
+        return $this->pageLoader->setPage('database/newDatabase')->render();
     }
 
     public function createDatabase(): string
@@ -91,7 +91,7 @@ class DatabaseController extends Controller
 
     public function newTable(string $databaseName): string
     {
-        return $this->pageLoader->setPage('database/table/new')->render([
+        return $this->pageLoader->setPage('database/table/newTable')->render([
             'databaseName' => $databaseName,
         ]);
     }
@@ -125,7 +125,7 @@ class DatabaseController extends Controller
             ->useTable($tableName)
             ->getTableColumns();
 
-        return $this->pageLoader->setPage('database/table/edit')->render([
+        return $this->pageLoader->setPage('database/table/editTable')->render([
             'databaseName' => $databaseName,
             'tableName' => $tableName,
             'tableColumns' => $tableColumns,
