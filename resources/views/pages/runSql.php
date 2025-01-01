@@ -6,13 +6,20 @@
 </nav>
 
 <p>You are connected to <?php echo $ipAddress . ":" . $port; ?> as <?php echo $username; ?></p>
+
+<div class="alert d-none" role="alert"></div></div>
+
+<hr />
+
+<div class="mb-3">
+    <label for="inputFile" class="form-label">Upload file to run</label>
+    <input class="form-control" type="file" id="inputFile" placeholder="SQL file" />
+</div>
+
+<hr />
+
 <p>Please enter the SQL you want to run below</p>
-
-<div class="alert d-none" role="alert"></div>
-
 <div id="editor" style="height: 600px"></div>
-
-<!-- <textarea class="form-control" id="sql" rows="10" autofocus placeholder="SQL"></textarea> -->
 
 <div class="d-flex align-items-center gap-2 mt-4 mb-4">
     <button class="btn btn-primary" id="runSqlButton">Run SQL</button>
@@ -40,17 +47,27 @@
         });
     });
 
+    const inputFile = document.getElementById('inputFile');
+    inputFile.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function() {
+            window.editor.setValue(reader.result);
+        };
+        reader.readAsText(file);
+    });
+
     const runSqlButton = document.getElementById('runSqlButton');
     runSqlButton.addEventListener('click', () => {
         fetch(`/run`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                sql: window.editor.getValue()
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sql: window.editor.getValue()
+                })
             })
-        })
-        .then(handleResponse);
+            .then(handleResponse);
     });
 </script>
