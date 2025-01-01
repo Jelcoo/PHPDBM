@@ -92,4 +92,9 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
         }
         $this->useDatabase($databaseName)->getConnection()->query('DROP TABLE ' . $tableName);
     }
+
+    public function runRawSql(string $sql): void
+    {
+        $this->getConnection()->query($sql);
+    }
 }

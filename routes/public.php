@@ -15,6 +15,9 @@ $router->middleware(EnsureNotLoggedIn::class, function () use ($router) {
 $router->middleware(EnsureLoggedIn::class, function () use ($router) {
     $router->get('/', [App\Controllers\HomeController::class, 'index']);
 
+    $router->get('/run', [App\Controllers\HomeController::class, 'run']);
+    $router->post('/run', [App\Controllers\HomeController::class, 'runSql']);
+
     $router->get('/database/new', [App\Controllers\DatabaseController::class, 'newDatabase']);
     $router->post('/database/new', [App\Controllers\DatabaseController::class, 'createDatabase']);
 
