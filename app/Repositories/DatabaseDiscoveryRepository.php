@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Exceptions\InvalidDatabaseException;
+use App\Exceptions\InvalidTableException;
 use App\Helpers\SchemaBuilder;
 
 /**
@@ -78,6 +79,17 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
 
     public function deleteDatabase(string $databaseName): void
     {
+        if (!$this->isValidDatabaseName($databaseName)) {
+            throw new InvalidDatabaseException();
+        }
         $this->getConnection()->query('DROP DATABASE ' . $databaseName);
+    }
+
+    public function deleteDatabaseTable(string $databaseName, string $tableName): void
+    {
+        if (!$this->isValidTableName($tableName)) {
+            throw new InvalidTableException();
+        }
+        $this->useDatabase($databaseName)->getConnection()->query('DROP TABLE ' . $tableName);
     }
 }

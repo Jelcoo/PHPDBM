@@ -142,4 +142,22 @@ class DatabaseController extends Controller
             'redirect' => '/',
         ]);
     }
+
+    public function deleteTable(string $databaseName, string $tableName): string
+    {
+        try {
+            $this->databaseDiscoveryRepository->deleteDatabaseTable($databaseName, $tableName);
+        } catch (\Exception $e) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => $e->getMessage(),
+            ]);
+        }
+
+        return json_encode([
+            'type' => SuccessEnum::REDIRECT,
+            'message' => 'Table deleted successfully',
+            'redirect' => '/database/' . $databaseName,
+        ]);
+    }
 }

@@ -66,11 +66,13 @@
                 cancelButtonColor: '#dd3333',
                 confirmButtonText: 'Drop'
             }).then((result) => {
-                window.scrollTo(0, 0);
-                fetch(`/database/${database.name}/delete`, {
-                    method: 'POST'
-                })
-                .then(handleResponse);
+                if (result.isConfirmed) {
+                    window.scrollTo(0, 0);
+                    fetch(`/database/${database.name}/delete`, {
+                        method: 'POST'
+                    })
+                    .then(handleResponse);
+                }
             });
         });
         deleteTd.appendChild(deleteA);
