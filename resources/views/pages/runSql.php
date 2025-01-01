@@ -14,7 +14,7 @@
 
 <!-- <textarea class="form-control" id="sql" rows="10" autofocus placeholder="SQL"></textarea> -->
 
-<div class="d-flex align-items-center gap-2 mt-2">
+<div class="d-flex align-items-center gap-2 mt-4 mb-4">
     <button class="btn btn-primary" id="runSqlButton">Run SQL</button>
 </div>
 
