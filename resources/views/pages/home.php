@@ -1,10 +1,21 @@
+<ul class="nav nav-tabs mb-2">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/run">Run SQL</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/users">Users</a>
+    </li>
+</ul>
+
 <p>You are connected to <?php echo $ipAddress . ":" . $port; ?> as <?php echo $username; ?></p>
 
 <div class="alert d-none" role="alert"></div>
 
 <div class="d-flex align-items-center gap-2 mt-2">
     <input class="form-control" id="search" type="text" placeholder="Search..." autofocus>
-    <a class="btn btn-primary" href="/run" data-bs-toggle="tooltip" data-bs-title="Run SQL"><i class="fa-solid fa-truck-fast"></i></a>
     <a class="btn btn-primary" href="/database/new" data-bs-toggle="tooltip" data-bs-title="Create database"><i class="fa-solid fa-plus"></i></a>
 </div>
 

@@ -97,4 +97,9 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
     {
         $this->getConnection()->exec($sql);
     }
+
+    public function getAllUsers(): array
+    {
+        return $this->getConnection()->query("SELECT user, host, CASE WHEN password = '' THEN FALSE ELSE TRUE END as hasPassword FROM mysql.user")->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

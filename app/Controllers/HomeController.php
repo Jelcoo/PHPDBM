@@ -77,4 +77,19 @@ class HomeController extends Controller
             'message' => 'SQL executed successfully',
         ]);
     }
+
+    public function users(): string
+    {
+        $username = $_SESSION['username'];
+        $ipAddress = $_SESSION['ip_address'];
+        $port = $_SESSION['port'];
+        $users = $this->databaseDiscoveryRepository->getAllUsers();
+
+        return $this->pageLoader->setPage('users')->render([
+            'username' => $username,
+            'ipAddress' => $ipAddress,
+            'port' => $port,
+            'users' => $users,
+        ]);
+    }
 }

@@ -1,9 +1,14 @@
-<nav style="--bs-breadcrumb-divider: '>';">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item active">Run SQL</li>
-    </ol>
-</nav>
+<ul class="nav nav-tabs mb-2">
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/run">Run SQL</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/users">Users</a>
+    </li>
+</ul>
 
 <p>You are connected to <?php echo $ipAddress . ":" . $port; ?> as <?php echo $username; ?></p>
 
