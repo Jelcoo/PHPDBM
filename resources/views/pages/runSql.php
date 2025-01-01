@@ -15,7 +15,9 @@
 
 <p>You are connected to <?php echo $ipAddress . ":" . $port; ?> as <?php echo $username; ?></p>
 
-<div class="alert d-none" role="alert"></div></div>
+<div class="alert alert-warning" role="alert">
+    <p class="mb-0">Please note that the SQL editor is not secure. All SQL statements will be executed.</p>
+</div>
 
 <hr />
 
