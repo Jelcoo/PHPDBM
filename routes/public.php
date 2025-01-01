@@ -43,6 +43,9 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
 
             $router->get('/database/{database}/{table}/edit/{key}', [App\Controllers\TableController::class, 'editRow']);
             $router->post('/database/{database}/{table}/edit/{key}', [App\Controllers\TableController::class, 'updateRow']);
+            
+            $router->get('/database/{database}/{table}/delete/{key}', [App\Controllers\TableController::class, 'deleteRow']);
+            $router->post('/database/{database}/{table}/delete/{key}', [App\Controllers\TableController::class, 'dropRow']);
         });
     });
 });

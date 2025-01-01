@@ -161,4 +161,46 @@ class TableController extends Controller
         readfile($exportPath);
         exit;
     }
+
+    public function deleteRow(string $databaseName, string $tableName, string $key): string
+    {
+        $this->databaseTableRepository->useDatabase($databaseName)->useTable($tableName);
+        $this->databaseUpdateRepository->useDatabase($databaseName)->useTable($tableName);
+
+        $tableColumns = $this->databaseTableRepository->getTableColumns();
+        $primaryKey = DatabaseHelpers::getPrimaryKey($tableColumns);
+        $tableRow = $this->databaseTableRepository->getRowByKey($primaryKey, $key);
+
+        return $this->pageLoader->setPage('database/table/row/deleteRow')->render([
+            'databaseName' => $databaseName,
+            'tableName' => $tableName,
+            'primaryKey' => $key,
+            'tableColumns' => $tableColumns,
+            'tableRow' => $tableRow,
+        ]);
+    }
+
+    public function dropRow(string $databaseName, string $tableName, string $key)
+    {
+        $this->databaseTableRepository->useDatabase($databaseName)->useTable($tableName);
+        $this->databaseUpdateRepository->useDatabase($databaseName)->useTable($tableName);
+
+        $tableColumns = $this->databaseTableRepository->getTableColumns();
+        $primaryKey = DatabaseHelpers::getPrimaryKey($tableColumns);
+
+        try {
+            $this->databaseUpdateRepository->deleteRow($primaryKey, $key);
+        } catch (\Exception $e) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => $e->getMessage(),
+            ]);
+        }
+
+        return json_encode([
+            'type' => SuccessEnum::REDIRECT,
+            'message' => 'Row deleted successfully',
+            'redirect' => '/database/' . $databaseName . '/' . $tableName,
+        ]);
+    }
 }

@@ -8,6 +8,7 @@
 </nav>
 
 <div class="alert d-none" role="alert"></div>
+
 <table class="table table-striped table-bordered">
     <thead>
         <th>Column</th>

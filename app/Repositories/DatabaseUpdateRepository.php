@@ -29,4 +29,12 @@ class DatabaseUpdateRepository extends DatabaseRepository
             ->where($primaryKey, '=', $keyValue)
             ->update($data);
     }
+
+    public function deleteRow(string $primaryKey, string $keyValue): void
+    {
+        $queryBuilder = new QueryBuilder($this->getConnection());
+        $queryBuilder->table($this->table)
+            ->where($primaryKey, '=', $keyValue)
+            ->delete();
+    }
 }

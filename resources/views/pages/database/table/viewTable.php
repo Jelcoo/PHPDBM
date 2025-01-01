@@ -33,8 +33,9 @@
             <?php foreach ($tableRows['data'] as $row) { ?>
                 <tr class="row-<?php echo isset($primaryKey) ? $row[$primaryKey] : 'unknown'; ?>">
                     <?php if ($primaryKey) { ?>
-                        <td>
+                        <td class="d-flex gap-2">
                             <a class="btn btn-primary btn-sm" href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/edit/<?php echo $row[$primaryKey]; ?>" data-bs-toggle="tooltip" data-bs-title="Edit row"><i class="fa-solid fa-pencil"></i></a>
+                            <a class="btn btn-danger btn-sm" href="/database/<?php echo $databaseName; ?>/<?php echo $tableName; ?>/delete/<?php echo $row[$primaryKey]; ?>" data-bs-toggle="tooltip" data-bs-title="Delete row"><i class="fa-solid fa-trash"></i></a>
                         </td>
                     <?php } ?>
                     <?php foreach ($tableColumns as $column) { ?>

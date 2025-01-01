@@ -182,4 +182,29 @@ class QueryBuilder
 
         return $sql;
     }
+    
+    public function delete(): int
+    {
+        $sql = $this->buildDeleteQuery();
+        $stmt = $this->pdo->prepare($sql);
+
+        foreach ($this->bindings as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
+
+    private function buildDeleteQuery(): string
+    {
+        $sql = "DELETE FROM {$this->table}";
+
+        if (!empty($this->conditions)) {
+            $sql .= ' WHERE ' . ltrim(implode(' ', $this->conditions));
+        }
+
+        return $sql;
+}
 }
