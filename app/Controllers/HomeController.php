@@ -92,4 +92,19 @@ class HomeController extends Controller
             'users' => $users,
         ]);
     }
+
+    public function connections(): string
+    {
+        $username = $_SESSION['username'];
+        $ipAddress = $_SESSION['ip_address'];
+        $port = $_SESSION['port'];
+        $connections = $this->databaseDiscoveryRepository->getAllConnections();
+
+        return $this->pageLoader->setPage('connections')->render([
+            'username' => $username,
+            'ipAddress' => $ipAddress,
+            'port' => $port,
+            'connections' => $connections,
+        ]);
+    }
 }

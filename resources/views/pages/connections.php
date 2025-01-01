@@ -6,10 +6,10 @@
         <a class="nav-link" href="/run">Run SQL</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/users">Users</a>
+        <a class="nav-link" href="/users">Users</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/connections">Connections</a>
+        <a class="nav-link active" aria-current="page" href="/connections">Connections</a>
     </li>
 </ul>
 
@@ -21,17 +21,19 @@
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>User</th>
                 <th>Host</th>
-                <th>Has password</th>
+                <th>Database</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($users as $user) { ?>
+            <?php foreach ($connections as $connection) { ?>
                 <tr>
-                    <td><?php echo $user['User']; ?></td>
-                    <td><?php echo $user['Host']; ?></td>
-                    <td class="<?php echo $user['hasPassword'] ? 'text-success-emphasis' : 'text-danger-emphasis'; ?>"><?php echo $user['hasPassword'] ? 'Yes' : 'No'; ?></td>
+                    <td><?php echo $connection['Id']; ?></td>
+                    <td><?php echo $connection['User']; ?></td>
+                    <td><?php echo $connection['Host']; ?></td>
+                    <td><?php echo $connection['db']; ?></td>
                 </tr>
             <?php } ?>
         </tbody>

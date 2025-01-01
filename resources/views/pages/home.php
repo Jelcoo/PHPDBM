@@ -8,6 +8,9 @@
     <li class="nav-item">
         <a class="nav-link" href="/users">Users</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/connections">Connections</a>
+    </li>
 </ul>
 
 <p>You are connected to <?php echo $ipAddress . ":" . $port; ?> as <?php echo $username; ?></p>

@@ -19,6 +19,7 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
     $router->post('/run', [App\Controllers\HomeController::class, 'runSql']);
 
     $router->get('/users', [App\Controllers\HomeController::class, 'users']);
+    $router->get('/connections', [App\Controllers\HomeController::class, 'connections']);
 
     $router->get('/database/new', [App\Controllers\DatabaseController::class, 'newDatabase']);
     $router->post('/database/new', [App\Controllers\DatabaseController::class, 'createDatabase']);

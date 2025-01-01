@@ -102,4 +102,9 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
     {
         return $this->getConnection()->query("SELECT user, host, CASE WHEN password = '' THEN FALSE ELSE TRUE END as hasPassword FROM mysql.user")->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public function getAllConnections(): array
+    {
+        return $this->getConnection()->query("SHOW FULL PROCESSLIST")->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
