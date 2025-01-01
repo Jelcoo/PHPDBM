@@ -95,6 +95,6 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
 
     public function runRawSql(string $sql): void
     {
-        $this->getConnection()->query($sql);
+        $this->getConnection()->exec($sql);
     }
 }

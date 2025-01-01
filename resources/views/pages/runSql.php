@@ -51,9 +51,6 @@
                 sql: window.editor.getValue()
             })
         })
-        .then(response => response.json())
-        .then(response => {
-            console.log(response);
-        });
+        .then(handleResponse);
     });
 </script>
