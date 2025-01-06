@@ -46,7 +46,7 @@
 
     const search = document.getElementById('search');
     search.addEventListener('input', () => {
-        const filteredTables = allTables.filter((table) => table.toLowerCase().includes(search.value.toLowerCase()));
+        const filteredTables = allTables.filter((table) => table.name.toLowerCase().includes(search.value.toLowerCase()));
         tbody.innerHTML = '';
         filteredTables.forEach((table) => {
             tbody.appendChild(tableToTableRow(table));

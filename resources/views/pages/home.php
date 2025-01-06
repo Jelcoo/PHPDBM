@@ -54,7 +54,7 @@
 
     const search = document.getElementById('search');
     search.addEventListener('input', () => {
-        const filteredDatabases = allDatabases.filter((database) => database.toLowerCase().includes(search.value.toLowerCase()));
+        const filteredDatabases = allDatabases.filter((database) => database.name.toLowerCase().includes(search.value.toLowerCase()));
         tbody.innerHTML = '';
         filteredDatabases.forEach((database) => {
             tbody.appendChild(dbToTableRow(database));
