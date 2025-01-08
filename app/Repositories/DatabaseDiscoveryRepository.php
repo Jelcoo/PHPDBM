@@ -93,9 +93,27 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
         $this->useDatabase($databaseName)->getConnection()->query('DROP TABLE ' . $tableName);
     }
 
-    public function runRawSql(string $sql): void
+    public function runSql(string|null $databaseName, string $sql): mixed
     {
-        $this->getConnection()->exec($sql);
+        if ($databaseName === null) {
+            $conn = $this->getConnection();
+        } else {
+            $conn = $this->useDatabase($databaseName)->getConnection();
+        }
+        $query = $conn->prepare($sql);
+        $queryType = strtoupper(explode(' ', trim($sql))[0]);
+        $executionSuccess = $query->execute();
+
+        $result = match ($queryType) {
+            'SELECT' => $query->fetchAll(\PDO::FETCH_ASSOC),
+            'INSERT', 'UPDATE', 'DELETE' => $query->rowCount(),
+            default => $executionSuccess,
+        };
+
+        return [
+            'queryType' => $queryType,
+            'result' => $result,
+        ];
     }
 
     public function getAllUsers(): array

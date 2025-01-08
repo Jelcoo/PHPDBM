@@ -21,6 +21,7 @@
         "phpcs:fix": "vendor/bin/php-cs-fixer fix"
     },
     "require": {
-        "spatie/db-dumper": "^3.7"
+        "spatie/db-dumper": "^3.7",
+        "phpmyadmin/sql-parser": "^5.10"
     }
 }

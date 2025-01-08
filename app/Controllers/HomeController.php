@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Enum\SuccessEnum;
+use App\Helpers\Database as DatabaseHelper;
 use App\Repositories\DatabaseDiscoveryRepository;
 
 class HomeController extends Controller
@@ -44,11 +45,13 @@ class HomeController extends Controller
         $username = $_SESSION['username'];
         $ipAddress = $_SESSION['ip_address'];
         $port = $_SESSION['port'];
+        $databases = $this->databaseDiscoveryRepository->getAllDatabases();
 
         return $this->pageLoader->setPage('runSql')->render([
             'username' => $username,
             'ipAddress' => $ipAddress,
             'port' => $port,
+            'databases' => $databases,
         ]);
     }
 
@@ -62,9 +65,11 @@ class HomeController extends Controller
                 'message' => 'SQL is required',
             ]);
         }
+        
+        $databaseName = empty($data['database']) ? null : $data['database'];
 
         try {
-            $this->databaseDiscoveryRepository->runRawSql($data['sql']);
+            $statements = DatabaseHelper::splitSql($data['sql']);
         } catch (\Exception $e) {
             return json_encode([
                 'type' => SuccessEnum::FAILURE,
@@ -72,9 +77,27 @@ class HomeController extends Controller
             ]);
         }
 
+        try {
+            $messages = [];
+            foreach ($statements as $statement) {
+                $stmtResult = $this->databaseDiscoveryRepository->runSql($databaseName, $statement);
+                $messages[] = [
+                    'type' => SuccessEnum::SUCCESS,
+                    'data' => $stmtResult,
+                    'original' => $statement,
+                ];
+            }
+        } catch (\Exception $e) {
+            $messages[] = [
+                'type' => SuccessEnum::FAILURE,
+                'message' => $e->getMessage(),
+            ];
+        }
+
         return json_encode([
             'type' => SuccessEnum::SUCCESS,
             'message' => 'SQL executed successfully',
+            'messages' => $messages,
         ]);
     }
 
