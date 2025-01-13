@@ -11,6 +11,9 @@
     <li class="nav-item">
         <a class="nav-link" href="/connections">Connections</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/bookmarks">Bookmarks</a>
+    </li>
 </ul>
 
 <p>You are connected to <?php echo $ipAddress . ":" . $port; ?> as <?php echo $username; ?></p>

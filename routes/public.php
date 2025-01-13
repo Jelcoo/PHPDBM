@@ -20,6 +20,7 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
 
     $router->get('/users', [App\Controllers\HomeController::class, 'users']);
     $router->get('/connections', [App\Controllers\HomeController::class, 'connections']);
+    $router->get('/bookmarks', [App\Controllers\HomeController::class, 'bookmarks']);
 
     $router->get('/database/new', [App\Controllers\DatabaseController::class, 'newDatabase']);
     $router->post('/database/new', [App\Controllers\DatabaseController::class, 'createDatabase']);

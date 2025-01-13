@@ -130,4 +130,9 @@ class HomeController extends Controller
             'connections' => $connections,
         ]);
     }
+
+    public function bookmarks(): string
+    {
+        return $this->pageLoader->setPage('bookmarks')->render();
+    }
 }
