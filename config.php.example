@@ -2,9 +2,4 @@
 
 return $config = [
     'APP_ENV' => 'production',
-    'DB_HOST' => 'mysql',
-    'DB_PORT' => '3306',
-    'DB_DATABASE' => '',
-    'DB_USERNAME' => '',
-    'DB_PASSWORD' => '',
 ];

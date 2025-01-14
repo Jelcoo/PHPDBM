@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Application\Response;
 use App\Application\Session;
+use App\Controllers\ErrorController;
 use App\Exceptions\InvalidDatabaseException;
 
 class DatabaseRepository
@@ -70,8 +72,16 @@ class DatabaseRepository
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
             \PDO::ATTR_EMULATE_PREPARES => false,
         ];
-
-        $this->pdoConnection = new \PDO($dsn, $this->username, $this->password, $options);
+        
+        try {
+            $this->pdoConnection = new \PDO($dsn, $this->username, $this->password, $options);
+        } catch (\PDOException $e) {
+            $response = new Response();
+            $response->setStatusCode(500);
+            $response->setContent((new ErrorController())->error500($e->getMessage()));
+            $response->send();
+            exit;
+        }
 
         return $this->pdoConnection;
     }
