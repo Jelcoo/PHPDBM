@@ -65,7 +65,7 @@ function handleResponse(response) {
             });
     } catch (e) {
         statusBanner.classList = 'alert alert-danger';
-        statusBanner.textContent = response;
+        statusBanner.textContent = 'Failed to parse response';
         return;
     }
 }
