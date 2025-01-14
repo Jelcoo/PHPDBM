@@ -64,10 +64,15 @@ class Router
             $route->callback[0] = new $route->callback[0]();
 
             $content = call_user_func_array($route->callback, [...$route->params]);
+            
             $this->response->setContent($content);
         }
 
-        $this->response->send();
+        if ($this->response->isJson()) {
+            $this->response->sendJson();
+        } else {
+            $this->response->send();
+        }
     }
 
     private function resolveRoute(string $uri, string $method): ?Route
