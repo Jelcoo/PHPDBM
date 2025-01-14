@@ -1,5 +1,14 @@
 # PHPDMB
 
+PHPDMB is a application that allows you to create and manage databases from a web UI.
+
+## Starting the application
+
+You can start the application by running the following command:
+```
+docker compose up -d
+```
+
 ## Accessing the application
 
 You can access the application by using the following credentials:
