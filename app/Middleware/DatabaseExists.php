@@ -6,17 +6,12 @@ use App\Repositories\DatabaseDiscoveryRepository;
 
 class DatabaseExists implements Middleware
 {
-    private DatabaseDiscoveryRepository $databaseDiscoveryRepository;
-
-    public function __construct()
-    {
-        $this->databaseDiscoveryRepository = new DatabaseDiscoveryRepository();
-    }
-
     public function verify(array $params = []): bool
     {
+        $databaseDiscoveryRepository = new DatabaseDiscoveryRepository();
+
         $databaseName = $params[0] ?? null;
 
-        return in_array($databaseName, $this->databaseDiscoveryRepository->getAllDatabases());
+        return in_array($databaseName, $databaseDiscoveryRepository->getAllDatabases());
     }
 }
