@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Application\Response;
 use App\Application\Session;
+use App\Config\Config;
 use App\Controllers\ErrorController;
 use App\Exceptions\InvalidDatabaseException;
 
@@ -76,6 +77,9 @@ class DatabaseRepository
         try {
             $this->pdoConnection = new \PDO($dsn, $this->username, $this->password, $options);
         } catch (\PDOException $e) {
+            if (Config::getKey('APP_ENV') === 'development') {
+                throw $e;
+            }
             $response = new Response();
             $response->setStatusCode(500);
             $response->setContent((new ErrorController())->error500($e->getMessage()));
