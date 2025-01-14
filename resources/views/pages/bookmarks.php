@@ -125,7 +125,10 @@
         const fullQuery = bookmark.query;
         const displayQuery = fullQuery.length > 100 ? fullQuery.substring(0, 100) + "..." : fullQuery.replace(/\n/g, "<br>");
         row.innerHTML = `
-            <td><button class="deleteBookmark btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-title="Delete bookmark"><i class="fa-solid fa-trash"></i></button></td>
+            <td>
+                <button class="deleteBookmark btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-title="Delete bookmark"><i class="fa-solid fa-trash"></i></button>
+                <button class="copyBookmark btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-title="Copy bookmark"><i class="fa-solid fa-copy"></i></button>
+            </td>
             <td>${bookmark.name}</td>
             <td title="${fullQuery}">${displayQuery}</td>
         `;
@@ -138,6 +141,21 @@
             }
             bookmarks = bookmarks.filter(b => b.name != bookmark.name);
             localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+        });
+        row.querySelector(".copyBookmark").addEventListener("click", () => {
+            const textarea = document.createElement("textarea");
+            textarea.value = fullQuery;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+            Swal.fire({
+                icon: 'success',
+                title: 'Copied to clipboard',
+                html: '<code>' + displayQuery + '</code>',
+                showConfirmButton: false,
+                timer: 1500
+            });
         });
         return row;
     }
