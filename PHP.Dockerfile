@@ -4,7 +4,10 @@ WORKDIR /app
 COPY . ./
 
 RUN apk add --no-cache mysql-client supervisor \
-    && docker-php-ext-install pdo pdo_mysql
+    && docker-php-ext-install pdo pdo_mysql \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && composer install  --no-dev --optimize-autoloader \
+    && cp config.php.example config.php
 
 COPY .github/docker/supervisord.conf /etc/supervisord.conf
 
