@@ -50,28 +50,9 @@
 
 <div id="results" class="pt-2 pb-2"></div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/editor/editor.main.min.css">
+<?php require(__DIR__.'/../templates/monaco.php'); ?>
 
 <script>
-    var require = {
-        paths: {
-            vs: 'https://cdn.jsdelivr.net/npm/monaco-editor/min/vs'
-        }
-    };
-</script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/loader.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/editor/editor.main.js"></script>
-
-<script>
-    require(['vs/editor/editor.main'], function() {
-        window.editor = monaco.editor.create(document.getElementById('editor'), {
-            value: '',
-            language: 'sql',
-            automaticLayout: true,
-            theme: "vs-dark",
-        });
-    });
-
     const inputFile = document.getElementById('inputFile');
     inputFile.addEventListener('change', (e) => {
         const file = e.target.files[0];
