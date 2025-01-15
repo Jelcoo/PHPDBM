@@ -8,7 +8,6 @@ class SchemaBuilder
     private string $table = '';
     private array $columns = [];
     private string $primaryKey = '';
-    private array $modifications = [];
     private string $query = '';
 
     public function __construct(\PDO $pdo)
@@ -28,41 +27,9 @@ class SchemaBuilder
         return $this;
     }
 
-    public function drop(): void
-    {
-        $sql = "DROP TABLE IF EXISTS {$this->table}";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
-    }
-
     public function addColumn(string $name, string $type, array $options = []): self
     {
         $this->columns[] = $this->buildColumnDefinition($name, $type, $options);
-        return $this;
-    }
-
-    public function primaryKey(string $column): self
-    {
-        $this->primaryKey = $column;
-        return $this;
-    }
-
-    public function alter(): self
-    {
-        $this->query = "ALTER TABLE {$this->table} ";
-        return $this;
-    }
-
-    public function modifyColumn(string $name, string $type, array $options = []): self
-    {
-        $definition = $this->buildColumnDefinition($name, $type, $options);
-        $this->modifications[] = "MODIFY COLUMN $definition";
-        return $this;
-    }
-
-    public function dropColumn(string $name): self
-    {
-        $this->modifications[] = "DROP COLUMN $name";
         return $this;
     }
 
@@ -74,10 +41,6 @@ class SchemaBuilder
                 $this->query .= ", PRIMARY KEY ({$this->primaryKey})";
             }
             $this->query .= ")";
-        }
-
-        if (!empty($this->modifications)) {
-            $this->query .= implode(", ", $this->modifications);
         }
 
         $stmt = $this->pdo->prepare($this->query);
@@ -115,7 +78,6 @@ class SchemaBuilder
         $this->table = '';
         $this->columns = [];
         $this->primaryKey = '';
-        $this->modifications = [];
         $this->query = '';
     }
 }
