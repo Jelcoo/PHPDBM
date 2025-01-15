@@ -64,22 +64,7 @@
         };
         const formRows = newTableForm.querySelectorAll('tbody tr');
         formRows.forEach((row) => {
-            const dataRow = {
-                index: row.id.split('-')[1]
-            };
-            const inputs = row.querySelectorAll('input');
-            inputs.forEach((input) => {
-                if (input.type === 'checkbox') {
-                    dataRow[input.dataset.columnField] = input.checked;
-                    return;
-                }
-                dataRow[input.dataset.columnField] = input.value;
-            });
-            const selects = row.querySelectorAll('select');
-            selects.forEach((select) => {
-                dataRow[select.dataset.columnField] = select.dataset.columnField === 'default' && select.value === 'none' ? null : select.value;
-            });
-            data.columns.push(dataRow);
+            data.columns.push(parseTableColumn(row));
         });
 
         fetch(`/database/${databaseName}/new`, {
