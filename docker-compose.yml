@@ -30,7 +30,7 @@ services:
             - 8080:80
         environment:
             - PMA_HOST=mysql
-            - PMA_USER=developer
+            - PMA_USER=root
             - PMA_PASSWORD=secret123
 volumes:
     mysqldata: {}
