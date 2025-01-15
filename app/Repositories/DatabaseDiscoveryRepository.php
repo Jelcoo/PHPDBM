@@ -72,7 +72,11 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
             if ($column['isAutoIncrement'] === true) {
                 $options['auto_increment'] = true;
             }
-            $schemaBuilder->addColumn($column['name'], 'VARCHAR(255)', $options);
+            $columnType = $column['type'];
+            if (!empty($column['length'])) {
+                $columnType .= '(' . $column['length'] . ')';
+            }
+            $schemaBuilder->addColumn($column['name'], $columnType, $options);
         }
         $schemaBuilder->execute();
     }

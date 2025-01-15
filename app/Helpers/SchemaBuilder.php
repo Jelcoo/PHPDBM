@@ -91,7 +91,12 @@ class SchemaBuilder
         $definition = "`$name` $type";
 
         if (!empty($options['default'])) {
-            $definition .= " DEFAULT " . (is_string($options['default']) ? "'{$options['default']}'" : $options['default']);
+            $default = $options['default'];
+            if ($default === 'CURRENT_TIMESTAMP') {
+                $definition .= " DEFAULT CURRENT_TIMESTAMP";
+            } else {
+                $definition .= " DEFAULT " . (is_string($options['default']) ? "'{$options['default']}'" : $options['default']);
+            }
         }
 
         if (!empty($options['nullable']) && $options['nullable'] === false) {
@@ -99,7 +104,7 @@ class SchemaBuilder
         }
 
         if (!empty($options['auto_increment']) && $options['auto_increment'] === true) {
-            $definition .= " AUTO_INCREMENT";
+            $definition .= " AUTO_INCREMENT PRIMARY KEY";
         }
 
         return $definition;
