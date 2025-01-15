@@ -77,7 +77,7 @@
             });
             const selects = row.querySelectorAll('select');
             selects.forEach((select) => {
-                dataRow[select.dataset.columnField] = select.value;
+                dataRow[select.dataset.columnField] = select.dataset.columnField === 'default' && select.value === 'none' ? null : select.value;
             });
             data.columns.push(dataRow);
         });
