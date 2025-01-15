@@ -20,6 +20,17 @@ Password: secret123
 ```
 This will connect you to the default host and allows you to access the demo database `demodb`.
 
+### Root Access
+
+You can also access the application by using the following credentials:
+```
+Host: mysql
+Port: 3306
+Username: root
+Password: secret123
+```
+This will connect you to the default host and allows you to modify the entire application database.
+
 ## API Endpoint
 
 This is the endpoint that will be used to interact with the PHPDMB API.
