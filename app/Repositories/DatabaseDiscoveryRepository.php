@@ -69,7 +69,7 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
             if ($column['isNull'] === false) {
                 $options['nullable'] = false;
             }
-            if ($column['isAi'] === true) {
+            if ($column['isAutoIncrement'] === true) {
                 $options['auto_increment'] = true;
             }
             $schemaBuilder->addColumn($column['name'], 'VARCHAR(255)', $options);

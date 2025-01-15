@@ -49,22 +49,7 @@
     addColumnButton.addEventListener('click', () => {
         const table = document.querySelector('table');
         const tbody = table.querySelector('tbody');
-        const tr = document.createElement('tr');
-        tr.id = `field-${columnCounter}`;
-        tr.innerHTML = `
-            <td><button type="button" class="btn btn-danger" onclick="this.parentNode.parentNode.remove()"><i class="fa-solid fa-trash"></i></button></td>
-            <td><input type="text" class="form-control" data-column-index="${columnCounter}" data-column-field="name" placeholder="Column name" /></td>
-            <td><select class="form-select" data-column-index="${columnCounter}" data-column-field="type">${columnTypeOptions().map(element => element.outerHTML).join('')}</select></td>
-            <td><input type="text" class="form-control" data-column-index="${columnCounter}" data-column-field="length" placeholder="Column length/value" /></td>
-            <td>
-                <select class="form-select" data-column-index="${columnCounter}" data-column-field="default">
-                    <option value="NULL">NULL</option>
-                    <option value="CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</option>
-                </select>
-            </td>
-            <td><input type="checkbox" data-column-index="${columnCounter}" data-column-field="isNull" /></td>
-            <td><input type="checkbox" data-column-index="${columnCounter}" data-column-field="isAi" /></td>
-        `;
+        const tr = addColumn(columnCounter, {}, 'text', '');
         tbody.appendChild(tr);
         columnCounter++;
     });
