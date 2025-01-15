@@ -99,7 +99,7 @@ class SchemaBuilder
             }
         }
 
-        if (!empty($options['nullable']) && $options['nullable'] === false) {
+        if (isset($options['nullable']) && $options['nullable'] === false) {
             $definition .= " NOT NULL";
         }
 
