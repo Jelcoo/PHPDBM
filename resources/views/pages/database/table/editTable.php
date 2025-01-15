@@ -85,7 +85,8 @@
             if (!newColumn) {
                 difference.push({
                     index: oldColumn.index,
-                    action: 'delete'
+                    action: 'delete',
+                    column: oldColumn
                 });
                 return;
             }

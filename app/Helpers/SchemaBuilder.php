@@ -49,7 +49,7 @@ class SchemaBuilder
         $this->reset();
     }
 
-    private function buildColumnDefinition(string $name, string $type, array $options): string
+    public static function buildColumnDefinition(string $name, string $type, array $options): string
     {
         $definition = "`$name` $type";
 

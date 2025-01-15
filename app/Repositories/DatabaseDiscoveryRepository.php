@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Exceptions\InvalidDatabaseException;
 use App\Exceptions\InvalidTableException;
+use App\Helpers\SchemaAlter;
 use App\Helpers\SchemaBuilder;
 
 /**
@@ -79,6 +80,36 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
             $schemaBuilder->addColumn($column['name'], $columnType, $options);
         }
         $schemaBuilder->execute();
+    }
+
+    public function updateDatabaseTable($columns): void
+    {
+        $schemaAlter = new SchemaAlter($this->getConnection());
+        $schemaAlter->table($this->table);
+
+        foreach ($columns as $column) {
+            if ($column['action'] === 'delete') {
+                $schemaAlter->dropColumn($column['column']['name']);
+            } else if ($column['action'] === 'update') {
+                //$schemaAlter->updateColumn($column['column']['name'], $column['new']);
+            } else if ($column['action'] === 'add') {
+                $options = [];
+                if ($column['column']['default'] !== null) {
+                    $options['default'] = $column['default'];
+                }
+                if ($column['column']['isNull'] === false) {
+                    $options['nullable'] = false;
+                }
+                if ($column['column']['isAutoIncrement'] === true) {
+                    $options['auto_increment'] = true;
+                }
+                $columnType = $column['column']['type'];
+                if (!empty($column['length'])) {
+                    $columnType .= '(' . $column['length'] . ')';
+                }
+                $schemaAlter->addColumn($column['column']['name'], $columnType, $options);
+            }
+        }
     }
 
     public function deleteDatabase(string $databaseName): void

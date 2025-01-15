@@ -139,6 +139,36 @@ class DatabaseController extends Controller
         ]);
     }
 
+    public function updateTable(string $databaseName, string $tableName): string
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if (empty($data['difference'])) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => 'No changes have been made',
+            ]);
+        }
+
+        try {
+            $this->databaseDiscoveryRepository
+                ->useDatabase($databaseName)
+                ->useTable($tableName)
+                ->updateDatabaseTable($data['difference']);
+        } catch (\Exception $e) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => $e->getMessage(),
+            ]);
+        }
+
+        return json_encode([
+            'type' => SuccessEnum::REDIRECT,
+            'message' => 'Table updated successfully',
+            'redirect' => '/database/' . $databaseName . '/' . $tableName . '/edit',
+        ]);
+    }
+
     public function delete(string $databaseName): string
     {
         try {

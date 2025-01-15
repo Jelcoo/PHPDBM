@@ -40,6 +40,7 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
         $router->middleware(TableExists::class, function () use ($router) {
             $router->get('/database/{database}/{table}', [App\Controllers\TableController::class, 'show']);
             $router->get('/database/{database}/{table}/edit', [App\Controllers\DatabaseController::class, 'editTable']);
+            $router->post('/database/{database}/{table}/edit', [App\Controllers\DatabaseController::class, 'updateTable']);
             
             $router->post('/database/{database}/{table}/delete', [App\Controllers\DatabaseController::class, 'deleteTable']);
 
