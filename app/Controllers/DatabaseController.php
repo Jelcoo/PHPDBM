@@ -107,15 +107,22 @@ class DatabaseController extends Controller
             ]);
         }
 
-        $this->databaseDiscoveryRepository
-            ->useDatabase($databaseName)
-            ->createDatabaseTable($data['name'], $data['columns']);
+        try {
+            $this->databaseDiscoveryRepository
+                ->useDatabase($databaseName)
+                ->createDatabaseTable($data['name'], $data['columns']);
 
-        return json_encode([
-            'type' => SuccessEnum::REDIRECT,
-            'message' => 'Table created successfully',
-            'redirect' => '/database/' . $databaseName . '/' . $data['name'],
-        ]);
+            return json_encode([
+                'type' => SuccessEnum::REDIRECT,
+                'message' => 'Table created successfully',
+                'redirect' => '/database/' . $databaseName . '/' . $data['name'],
+            ]);
+        } catch (\Exception $e) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 
     public function editTable(string $databaseName, string $tableName): string
@@ -134,13 +141,21 @@ class DatabaseController extends Controller
 
     public function delete(string $databaseName): string
     {
-        $this->databaseDiscoveryRepository->deleteDatabase($databaseName);
-
-        return json_encode([
-            'type' => SuccessEnum::REDIRECT,
-            'message' => 'Database deleted successfully',
-            'redirect' => '/',
-        ]);
+        try {
+            $this->databaseDiscoveryRepository->deleteDatabase($databaseName);
+    
+            return json_encode([
+                'type' => SuccessEnum::REDIRECT,
+                'message' => 'Database deleted successfully',
+                'redirect' => '/',
+            ]);
+        } catch (\Exception $e) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => $e->getMessage(),
+            ]);
+            
+        }
     }
 
     public function deleteTable(string $databaseName, string $tableName): string
