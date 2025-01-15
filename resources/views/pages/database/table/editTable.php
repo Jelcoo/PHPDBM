@@ -35,6 +35,7 @@
 
 <script>
     const databaseName = <?php echo json_encode($databaseName); ?>;
+    const tableName = <?php echo json_encode($tableName); ?>;
     const tableColumns = <?php echo json_encode($tableColumns); ?>;
     let columnCounter = 0;
 
@@ -59,41 +60,84 @@
         columnCounter++;
     });
 
-    // const newTableForm = document.getElementById('newTableForm');
-    // newTableForm.addEventListener('submit', (event) => {
-    //     event.preventDefault();
+    const oldColumns = [];
+    document.addEventListener('DOMContentLoaded', () => {
+        const formRows = editTableForm.querySelectorAll('tbody tr');
+        formRows.forEach((row) => {
+            oldColumns.push(parseTableColumn(row));
+        });
+    });
+    const editTableForm = document.getElementById('editTableForm');
+    editTableForm.addEventListener('submit', (event) => {
+        const newColumns = [];
+        event.preventDefault();
 
-    //     const data = {
-    //         name: newTableForm.querySelector('input[name="table_name"]').value,
-    //         columns: []
-    //     };
-    //     const formRows = newTableForm.querySelectorAll('tbody tr');
-    //     formRows.forEach((row) => {
-    //         const dataRow = {
-    //             index: row.id.split('-')[1]
-    //         };
-    //         const inputs = row.querySelectorAll('input');
-    //         inputs.forEach((input) => {
-    //             if (input.type === 'checkbox') {
-    //                 dataRow[input.dataset.columnField] = input.checked;
-    //                 return;
-    //             }
-    //             dataRow[input.dataset.columnField] = input.value;
-    //         });
-    //         const selects = row.querySelectorAll('select');
-    //         selects.forEach((select) => {
-    //             dataRow[select.dataset.columnField] = select.value;
-    //         });
-    //         data.columns.push(dataRow);
-    //     });
+        const formRows = editTableForm.querySelectorAll('tbody tr');
+        formRows.forEach((row) => {
+            newColumns.push(parseTableColumn(row));
+        });
 
-    //     fetch(`/database/${databaseName}/new`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(data)
-    //     })
-    //     .then(handleResponse);
-    // });
+        const difference = [];
+        oldColumns.forEach((oldColumn) => {
+            const newColumn = newColumns.find((newColumn) => newColumn.index === oldColumn.index);
+
+            // Column has been deleted
+            if (!newColumn) {
+                difference.push({
+                    index: oldColumn.index,
+                    action: 'delete'
+                });
+                return;
+            }
+
+            Object.keys(oldColumn).forEach((key) => {
+                // Column has been updated
+                if (oldColumn[key] !== newColumn[key]) {
+                    const existingDifference = difference.find((difference) => difference.index === oldColumn.index);
+                    if (existingDifference) {
+                        existingDifference.column.push({
+                            key: key,
+                            old: oldColumn[key],
+                            new: newColumn[key]
+                        });
+                        return;
+                    }
+
+                    difference.push({
+                        index: oldColumn.index,
+                        action: 'update',
+                        column: [{
+                            key: key,
+                            old: oldColumn[key],
+                            new: newColumn[key]
+                        }]
+                    });
+                }
+            });
+        });
+
+        newColumns.forEach((newColumn) => {
+            const oldColumn = oldColumns.find((oldColumn) => oldColumn.index === newColumn.index);
+
+            // Column has been added
+            if (!oldColumn) {
+                difference.push({
+                    index: newColumn.index,
+                    action: 'add',
+                    column: newColumn
+                });
+            }
+        });
+
+        fetch(`/database/${databaseName}/${tableName}/edit`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                difference: difference
+            })
+        })
+        .then(handleResponse);
+    });
 </script>
