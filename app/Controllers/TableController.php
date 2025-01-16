@@ -65,7 +65,7 @@ class TableController extends Controller
 
     public function createRow(string $databaseName, string $tableName)
     {
-        $this->databaseTableRepository->useDatabase($databaseName)->useTable($tableName);
+        $this->databaseUpdateRepository->useDatabase($databaseName)->useTable($tableName);
 
         $data = json_decode(file_get_contents('php://input'), true);
 
