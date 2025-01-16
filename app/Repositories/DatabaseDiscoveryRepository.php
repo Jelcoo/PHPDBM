@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\InvalidColumnException;
 use App\Exceptions\InvalidDatabaseException;
 use App\Exceptions\InvalidTableException;
 use App\Helpers\SchemaAlter;
@@ -63,6 +64,10 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
         $schemaBuilder->table($tableName)->create();
 
         foreach ($columns as $column) {
+            if (!DatabaseRepository::isValidColumnName($column['name'])) {
+                throw new InvalidColumnException($column['name']);
+            }
+
             $options = [];
             if ($column['default'] !== null) {
                 $options['default'] = $column['default'];
