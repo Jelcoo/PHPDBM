@@ -112,7 +112,7 @@ class QueryBuilder
         return empty($result) ? null : $result[0];
     }
 
-    public function insert(array $data): int
+    public function insert(array $data): string
     {
         $columns = implode(', ', array_keys($data));
         $placeholders = implode(', ', array_fill(0, count($data), '?'));

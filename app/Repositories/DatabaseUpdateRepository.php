@@ -15,7 +15,7 @@ class DatabaseUpdateRepository extends DatabaseRepository
         $this->prepareFromSession();
     }
 
-    public function createRow(array $data): int
+    public function createRow(array $data): string
     {
         $queryBuilder = new QueryBuilder($this->getConnection());
         return $queryBuilder->table($this->table)
