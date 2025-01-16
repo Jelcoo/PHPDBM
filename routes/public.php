@@ -29,7 +29,7 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
 
     $router->middleware(DatabaseExists::class, function () use ($router) {
         $router->get('/database/{database}', [App\Controllers\DatabaseController::class, 'show']);
-        
+
         $router->post('/database/{database}/delete', [App\Controllers\DatabaseController::class, 'delete']);
 
         $router->get('/database/{database}/export', [App\Controllers\DatabaseController::class, 'export']);
@@ -41,7 +41,7 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
             $router->get('/database/{database}/{table}', [App\Controllers\TableController::class, 'show']);
             $router->get('/database/{database}/{table}/edit', [App\Controllers\DatabaseController::class, 'editTable']);
             $router->post('/database/{database}/{table}/edit', [App\Controllers\DatabaseController::class, 'updateTable']);
-            
+
             $router->post('/database/{database}/{table}/delete', [App\Controllers\DatabaseController::class, 'deleteTable']);
 
             $router->get('/database/{database}/{table}/export', [App\Controllers\TableController::class, 'export']);
@@ -51,7 +51,7 @@ $router->middleware(EnsureLoggedIn::class, function () use ($router) {
 
             $router->get('/database/{database}/{table}/edit/{key}', [App\Controllers\TableController::class, 'editRow']);
             $router->post('/database/{database}/{table}/edit/{key}', [App\Controllers\TableController::class, 'updateRow']);
-            
+
             $router->get('/database/{database}/{table}/delete/{key}', [App\Controllers\TableController::class, 'deleteRow']);
             $router->post('/database/{database}/{table}/delete/{key}', [App\Controllers\TableController::class, 'dropRow']);
         });

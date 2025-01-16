@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Exceptions\InvalidColumnException;
-use App\Exceptions\InvalidDatabaseException;
-use App\Exceptions\InvalidTableException;
 use App\Helpers\SchemaAlter;
 use App\Helpers\SchemaBuilder;
+use App\Exceptions\InvalidTableException;
+use App\Exceptions\InvalidColumnException;
+use App\Exceptions\InvalidDatabaseException;
 
 /**
  * @method self useDatabase(string $database)
@@ -26,7 +26,7 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
 
     public function getDatabaseSize(): int
     {
-        $statement = $this->getConnection()->prepare("SELECT SUM(data_length + index_length) AS size FROM information_schema.tables WHERE table_schema=:databaseName GROUP BY table_schema;");
+        $statement = $this->getConnection()->prepare('SELECT SUM(data_length + index_length) AS size FROM information_schema.tables WHERE table_schema=:databaseName GROUP BY table_schema;');
         $statement->execute(['databaseName' => $this->database]);
 
         return (int) $statement->fetch(\PDO::FETCH_COLUMN);
@@ -34,7 +34,7 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
 
     public function getTableSize(): int
     {
-        $statement = $this->getConnection()->prepare("SELECT data_length + index_length AS size FROM information_schema.tables WHERE table_schema=:databaseName AND table_name=:tableName;");    
+        $statement = $this->getConnection()->prepare('SELECT data_length + index_length AS size FROM information_schema.tables WHERE table_schema=:databaseName AND table_name=:tableName;');
         $statement->execute(['databaseName' => $this->database, 'tableName' => $this->table]);
 
         return (int) $statement->fetch(\PDO::FETCH_COLUMN);
@@ -83,7 +83,7 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
         foreach ($columns as $column) {
             if ($column['action'] === 'delete') {
                 $schemaAlter->dropColumn($column['column']['name']);
-            } else if ($column['action'] === 'update') {
+            } elseif ($column['action'] === 'update') {
                 foreach ($column['updates'] as $update) {
                     switch ($update['key']) {
                         case 'name':
@@ -101,17 +101,20 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
                             break;
                         case 'default':
                             $column['column']['default'] = $update['new'];
+                            break;
                         case 'nullable':
                             $column['column']['isNull'] = $update['new'];
+                            break;
                         case 'auto_increment':
                             $column['column']['isAutoIncrement'] = $update['new'];
+                            break;
                     }
                 }
                 $options = SchemaBuilder::parseColumnOptions($column['column']);
                 $columnType = SchemaBuilder::parseColumnType($column['column']['type'], $column['column']['length']);
                 $definition = SchemaBuilder::buildColumnDefinition($column['column']['name'], $columnType, $options);
                 $schemaAlter->changeColumnDefinition($column['column']['name'], $definition);
-            } else if ($column['action'] === 'add') {
+            } elseif ($column['action'] === 'add') {
                 $options = SchemaBuilder::parseColumnOptions($column['column']);
                 $columnType = SchemaBuilder::parseColumnType($column['column']['type'], $column['column']['length']);
                 $schemaAlter->addColumn($column['column']['name'], $columnType, $options);
@@ -135,7 +138,7 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
         $this->useDatabase($databaseName)->getConnection()->query('DROP TABLE ' . $tableName);
     }
 
-    public function runSql(string|null $databaseName, string $sql): mixed
+    public function runSql(?string $databaseName, string $sql): mixed
     {
         if ($databaseName === null) {
             $conn = $this->getConnection();
@@ -165,6 +168,6 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
 
     public function getAllConnections(): array
     {
-        return $this->getConnection()->query("SHOW FULL PROCESSLIST")->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->getConnection()->query('SHOW FULL PROCESSLIST')->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

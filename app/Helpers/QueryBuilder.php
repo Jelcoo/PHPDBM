@@ -109,6 +109,7 @@ class QueryBuilder
     {
         $this->limit(1);
         $result = $this->get();
+
         return empty($result) ? null : $result[0];
     }
 
@@ -182,7 +183,7 @@ class QueryBuilder
 
         return $sql;
     }
-    
+
     public function delete(): int
     {
         $sql = $this->buildDeleteQuery();
@@ -206,5 +207,5 @@ class QueryBuilder
         }
 
         return $sql;
-}
+    }
 }

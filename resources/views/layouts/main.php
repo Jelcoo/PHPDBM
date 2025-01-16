@@ -54,9 +54,9 @@ $loggedIn = Session::isValidSession();
     </div>
     <footer class="py-3 my-4">
         <p class="text-center text-body-secondary">© <?php echo date('Y'); ?> Jelco <?php
-                                                                                                if (\App\Config\Config::getKey('APP_ENV') === 'development') {
+                                                                                                if (App\Config\Config::getKey('APP_ENV') === 'development') {
                                                                                                     $endtime = microtime(true);
-                                                                                                    printf("&centerdot; Page loaded in %f seconds", $endtime - $GLOBALS['APP_START_TIME']);
+                                                                                                    printf('&centerdot; Page loaded in %f seconds', $endtime - $GLOBALS['APP_START_TIME']);
                                                                                                 } ?>
         </p>
     </footer>

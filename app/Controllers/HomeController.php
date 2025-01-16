@@ -65,7 +65,7 @@ class HomeController extends Controller
                 'message' => 'SQL is required',
             ]);
         }
-        
+
         $databaseName = empty($data['database']) ? null : $data['database'];
 
         try {

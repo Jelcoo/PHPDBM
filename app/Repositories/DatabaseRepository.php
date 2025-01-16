@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Application\Response;
-use App\Application\Session;
 use App\Config\Config;
+use App\Application\Session;
+use App\Application\Response;
 use App\Controllers\ErrorController;
 use App\Exceptions\InvalidDatabaseException;
 
@@ -29,13 +29,14 @@ class DatabaseRepository
 
         return $this;
     }
+
     public function useTable(string $table): self
     {
         if (! $this->isValidTableName($table)) {
             throw new InvalidDatabaseException();
         }
         $this->table = $table;
-        
+
         return $this;
     }
 
@@ -73,7 +74,7 @@ class DatabaseRepository
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
             \PDO::ATTR_EMULATE_PREPARES => false,
         ];
-        
+
         try {
             $this->pdoConnection = new \PDO($dsn, $this->username, $this->password, $options);
         } catch (\PDOException $e) {

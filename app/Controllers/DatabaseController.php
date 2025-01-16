@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Enum\SuccessEnum;
-use App\Repositories\DatabaseDiscoveryRepository;
-use App\Repositories\DatabaseExportRepository;
 use App\Repositories\DatabaseTableRepository;
+use App\Repositories\DatabaseExportRepository;
+use App\Repositories\DatabaseDiscoveryRepository;
 
 class DatabaseController extends Controller
 {
@@ -173,7 +173,7 @@ class DatabaseController extends Controller
     {
         try {
             $this->databaseDiscoveryRepository->deleteDatabase($databaseName);
-    
+
             return json_encode([
                 'type' => SuccessEnum::REDIRECT,
                 'message' => 'Database deleted successfully',
@@ -184,7 +184,7 @@ class DatabaseController extends Controller
                 'type' => SuccessEnum::FAILURE,
                 'message' => $e->getMessage(),
             ]);
-            
+
         }
     }
 

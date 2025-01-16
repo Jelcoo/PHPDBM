@@ -40,7 +40,7 @@
                     <?php } ?>
                     <?php foreach ($tableColumns as $column) { ?>
                         <?php $value = $row[$column['Field']]; ?>
-                        <td class="align-middle text-truncate text-truncate-width <?php echo $value === null || empty($value) ? 'fst-italic text-danger-emphasis' : ''; ?> field-<?php echo $column['Field']; ?>" title="<?php echo htmlspecialchars($value) ?>"><?php echo ($value === null ? 'NULL' : empty($value)) ? 'EMPTY' : htmlspecialchars($value); ?></td>
+                        <td class="align-middle text-truncate text-truncate-width <?php echo $value === null || empty($value) ? 'fst-italic text-danger-emphasis' : ''; ?> field-<?php echo $column['Field']; ?>" title="<?php echo htmlspecialchars($value); ?>"><?php echo ($value === null ? 'NULL' : empty($value)) ? 'EMPTY' : htmlspecialchars($value); ?></td>
                     <?php } ?>
                 </tr>
             <?php } ?>

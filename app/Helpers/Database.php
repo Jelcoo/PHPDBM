@@ -13,6 +13,7 @@ class Database
                 return $column['Field'];
             }
         }
+
         return null;
     }
 

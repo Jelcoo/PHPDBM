@@ -9,7 +9,7 @@ class TableExists implements Middleware
     public function verify(array $params = []): bool
     {
         $databaseDiscoveryRepository = new DatabaseDiscoveryRepository();
-        
+
         $databaseName = $params[0] ?? null;
         $tableName = $params[1] ?? null;
 

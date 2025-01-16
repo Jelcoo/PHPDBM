@@ -16,7 +16,7 @@
     </li>
 </ul>
 
-<p>You are connected to <?php echo $ipAddress . ":" . $port; ?> as <?php echo $username; ?></p>
+<p>You are connected to <?php echo $ipAddress . ':' . $port; ?> as <?php echo $username; ?></p>
 
 <div class="alert alert-warning" role="alert">
     <p class="mb-0">Please note that the SQL editor is not secure. All SQL statements will be executed.</p>
@@ -34,9 +34,9 @@
 <div class="form-floating my-1">
     <select class="form-select" id="database_name">
         <option value="" selected>None</option>
-        <?php foreach ($databases as $database) : ?>
+        <?php foreach ($databases as $database) { ?>
             <option value="<?php echo $database; ?>"><?php echo $database; ?></option>
-        <?php endforeach; ?>
+        <?php } ?>
     </select>
     <label for="database_name">Database name</label>
 </div>
@@ -50,7 +50,7 @@
 
 <div id="results" class="pt-2 pb-2"></div>
 
-<?php require(__DIR__.'/../templates/monaco.php'); ?>
+<?php require __DIR__ . '/../templates/monaco.php'; ?>
 
 <script>
     const inputFile = document.getElementById('inputFile');

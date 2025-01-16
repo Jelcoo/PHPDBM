@@ -2,7 +2,8 @@
 
 namespace App\Enum;
 
-enum SuccessEnum: string {
+enum SuccessEnum: string
+{
     case SUCCESS = 'success';
     case FAILURE = 'failure';
     case WARNING = 'warning';

@@ -2,12 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Helpers\Database as DatabaseHelpers;
-use App\Helpers\Pagination;
-use App\Repositories\DatabaseTableRepository;
-use App\Repositories\DatabaseUpdateRepository;
 use App\Enum\SuccessEnum;
+use App\Helpers\Pagination;
+use App\Helpers\Database as DatabaseHelpers;
+use App\Repositories\DatabaseTableRepository;
 use App\Repositories\DatabaseExportRepository;
+use App\Repositories\DatabaseUpdateRepository;
 
 class TableController extends Controller
 {

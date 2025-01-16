@@ -64,7 +64,7 @@ class Router
             $route->callback[0] = new $route->callback[0]();
 
             $content = call_user_func_array($route->callback, [...$route->params]);
-            
+
             $this->response->setContent($content);
         }
 

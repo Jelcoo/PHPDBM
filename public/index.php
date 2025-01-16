@@ -7,7 +7,6 @@ require_once __DIR__ . '/../bootstrap/app.php';
 
 use App\Application\Router;
 use App\Application\Application;
-use App\Config\Config;
 
 $app = Application::getInstance();
 $router = Router::getInstance();

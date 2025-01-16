@@ -61,7 +61,7 @@
     </div>
 </div>
 
-<?php require(__DIR__ . '/../templates/monaco.php'); ?>
+<?php require __DIR__ . '/../templates/monaco.php'; ?>
 
 <script>
     const storedBookmarks = localStorage.getItem("bookmarks");

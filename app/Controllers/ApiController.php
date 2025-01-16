@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Enum\SuccessEnum;
-use App\Helpers\Database as DatabaseHelper;
 use App\Repositories\DatabaseDiscoveryRepository;
 
 class ApiController extends Controller

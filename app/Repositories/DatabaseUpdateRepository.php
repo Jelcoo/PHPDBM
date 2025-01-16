@@ -18,6 +18,7 @@ class DatabaseUpdateRepository extends DatabaseRepository
     public function createRow(array $data): string
     {
         $queryBuilder = new QueryBuilder($this->getConnection());
+
         return $queryBuilder->table($this->table)
             ->insert($data);
     }

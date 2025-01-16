@@ -20,6 +20,7 @@ class SchemaAlter
             throw new InvalidTableException();
         }
         $this->table = $table;
+
         return $this;
     }
 

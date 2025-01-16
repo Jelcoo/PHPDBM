@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Middleware\Middleware;
-
 class Route
 {
     public string $uri;

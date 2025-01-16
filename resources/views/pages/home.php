@@ -16,7 +16,7 @@
     </li>
 </ul>
 
-<p>You are connected to <?php echo $ipAddress . ":" . $port; ?> as <?php echo $username; ?></p>
+<p>You are connected to <?php echo $ipAddress . ':' . $port; ?> as <?php echo $username; ?></p>
 
 <div class="alert d-none" role="alert"></div>
 
