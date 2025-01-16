@@ -23,8 +23,3 @@ while (false !== ($file = readdir($handle))) {
 closedir($handle);
 
 $app->run();
-
-if (Config::getKey('APP_ENV') === 'development') {
-    $endtime = microtime(true);
-    printf("Page loaded in %f seconds", $endtime - $GLOBALS['APP_START_TIME'] );
-}
