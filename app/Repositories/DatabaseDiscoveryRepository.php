@@ -68,20 +68,8 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
                 throw new InvalidColumnException($column['name']);
             }
 
-            $options = [];
-            if ($column['default'] !== null) {
-                $options['default'] = $column['default'];
-            }
-            if ($column['isNull'] === false) {
-                $options['nullable'] = false;
-            }
-            if ($column['isAutoIncrement'] === true) {
-                $options['auto_increment'] = true;
-            }
-            $columnType = $column['type'];
-            if (!empty($column['length'])) {
-                $columnType .= '(' . $column['length'] . ')';
-            }
+            $options = SchemaBuilder::parseColumnOptions($column);
+            $columnType = SchemaBuilder::parseColumnType($column['type'], $column['length']);
             $schemaBuilder->addColumn($column['name'], $columnType, $options);
         }
         $schemaBuilder->execute();
@@ -96,22 +84,36 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
             if ($column['action'] === 'delete') {
                 $schemaAlter->dropColumn($column['column']['name']);
             } else if ($column['action'] === 'update') {
-                //$schemaAlter->updateColumn($column['column']['name'], $column['new']);
+                foreach ($column['updates'] as $update) {
+                    switch ($update['key']) {
+                        case 'name':
+                            if (!DatabaseRepository::isValidColumnName($update['new'])) {
+                                throw new InvalidColumnException($update['new']);
+                            }
+                            $schemaAlter->renameColumn($update['old'], $update['new']);
+                            $column['column']['name'] = $update['new'];
+                            break;
+                        case 'type':
+                            $column['column']['type'] = $update['new'];
+                            break;
+                        case 'length':
+                            $column['column']['length'] = $update['new'];
+                            break;
+                        case 'default':
+                            $column['column']['default'] = $update['new'];
+                        case 'nullable':
+                            $column['column']['isNull'] = $update['new'];
+                        case 'auto_increment':
+                            $column['column']['isAutoIncrement'] = $update['new'];
+                    }
+                }
+                $options = SchemaBuilder::parseColumnOptions($column['column']);
+                $columnType = SchemaBuilder::parseColumnType($column['column']['type'], $column['column']['length']);
+                $definition = SchemaBuilder::buildColumnDefinition($column['column']['name'], $columnType, $options);
+                $schemaAlter->changeColumnDefinition($column['column']['name'], $definition);
             } else if ($column['action'] === 'add') {
-                $options = [];
-                if ($column['column']['default'] !== null) {
-                    $options['default'] = $column['default'];
-                }
-                if ($column['column']['isNull'] === false) {
-                    $options['nullable'] = false;
-                }
-                if ($column['column']['isAutoIncrement'] === true) {
-                    $options['auto_increment'] = true;
-                }
-                $columnType = $column['column']['type'];
-                if (!empty($column['length'])) {
-                    $columnType .= '(' . $column['length'] . ')';
-                }
+                $options = SchemaBuilder::parseColumnOptions($column['column']);
+                $columnType = SchemaBuilder::parseColumnType($column['column']['type'], $column['column']['length']);
                 $schemaAlter->addColumn($column['column']['name'], $columnType, $options);
             }
         }

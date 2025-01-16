@@ -96,7 +96,7 @@
                 if (oldColumn[key] !== newColumn[key]) {
                     const existingDifference = difference.find((difference) => difference.index === oldColumn.index);
                     if (existingDifference) {
-                        existingDifference.column.push({
+                        existingDifference.updates.push({
                             key: key,
                             old: oldColumn[key],
                             new: newColumn[key]
@@ -107,7 +107,8 @@
                     difference.push({
                         index: oldColumn.index,
                         action: 'update',
-                        column: [{
+                        column: oldColumn,
+                        updates: [{
                             key: key,
                             old: oldColumn[key],
                             new: newColumn[key]

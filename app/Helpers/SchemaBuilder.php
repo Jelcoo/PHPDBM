@@ -73,6 +73,30 @@ class SchemaBuilder
         return $definition;
     }
 
+    public static function parseColumnOptions(array $column): array
+    {
+        $options = [];
+        if ($column['default'] !== null) {
+            $options['default'] = $column['default'];
+        }
+        if ($column['isNull'] === false) {
+            $options['nullable'] = false;
+        }
+        if ($column['isAutoIncrement'] === true) {
+            $options['auto_increment'] = true;
+        }
+        return $options;
+    }
+    
+    public static function parseColumnType(string $type, string $length): string
+    {
+        $columnType = $type;
+        if (!empty($length)) {
+            $columnType .= '(' . $length . ')';
+        }
+        return $columnType;
+    }
+
     private function reset(): void
     {
         $this->table = '';

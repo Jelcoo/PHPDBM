@@ -104,4 +104,9 @@ class DatabaseRepository
     {
         return preg_match('/^[a-zA-Z0-9_]+$/', $tableName);
     }
+
+    public static function isValidColumnName(string $columnName): bool
+    {
+        return preg_match('/^[a-zA-Z0-9_]+$/', $columnName);
+    }
 }

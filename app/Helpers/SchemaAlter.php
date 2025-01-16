@@ -33,4 +33,18 @@ class SchemaAlter
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
     }
+
+    public function renameColumn(string $oldName, string $newName): void
+    {
+        $query = "ALTER TABLE {$this->table} RENAME COLUMN {$oldName} TO {$newName}";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+    }
+
+    public function changeColumnDefinition(string $column, string $definition): void
+    {
+        $query = "ALTER TABLE {$this->table} CHANGE COLUMN `{$column}` {$definition}";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+    }
 }
