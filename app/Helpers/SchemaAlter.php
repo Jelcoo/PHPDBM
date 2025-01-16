@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use App\Exceptions\InvalidTableException;
+
 class SchemaAlter
 {
     private \PDO $pdo;
@@ -14,6 +16,9 @@ class SchemaAlter
 
     public function table(string $table): self
     {
+        if (empty($table)) {
+            throw new InvalidTableException();
+        }
         $this->table = $table;
         return $this;
     }
