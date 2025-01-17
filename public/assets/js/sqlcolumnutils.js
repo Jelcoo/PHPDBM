@@ -69,12 +69,11 @@ function columnDefaultOptions(tr, column, columnCounter) {
         select.appendChild(optionElement);
     });
     select.addEventListener('change', () => {
-        console.log(select.value);
         if (select.value === 'specified') {
             const input = specifiedInput(columnCounter);
             selectDiv.appendChild(input);
         } else {
-            selectDiv.removeChild(selectDiv.lastChild);
+            selectDiv.querySelector('input').remove();
         }
     });
 
@@ -100,9 +99,10 @@ function specifiedInput(counter, defaultInput) {
     const input = document.createElement('input');
     input.classList.add('form-control');
     input.setAttribute('data-column-index', counter);
-    input.setAttribute('data-column-field', 'default');
+    input.setAttribute('data-column-field', 'defaultvalue');
     input.setAttribute('placeholder', 'Default value');
-    input.defaultValue = defaultInput || '';
+    const inputValue = defaultInput.replace(/'/g, "");
+    input.defaultValue = inputValue || '';
     return input;
 }
 

@@ -95,11 +95,14 @@
                 // Column has been updated
                 if (oldColumn[key] !== newColumn[key]) {
                     const existingDifference = difference.find((difference) => difference.index === oldColumn.index);
+                    let oldValue = oldColumn[key];
+                    let newValue = newColumn[key];
+
                     if (existingDifference) {
                         existingDifference.updates.push({
                             key: key,
-                            old: oldColumn[key],
-                            new: newColumn[key]
+                            old: oldValue,
+                            new: newValue
                         });
                         return;
                     }
@@ -110,12 +113,37 @@
                         column: oldColumn,
                         updates: [{
                             key: key,
-                            old: oldColumn[key],
-                            new: newColumn[key]
+                            old: oldValue,
+                            new: newValue
                         }]
                     });
                 }
             });
+
+            if (newColumn.default === 'specified') {
+                const existingDifference = difference.find((difference) => difference.index === oldColumn.index);
+
+                if (oldColumn.defaultvalue != newColumn.defaultvalue) {
+                    if (existingDifference) {
+                        existingDifference.updates.push({
+                            key: 'default',
+                            old: oldColumn.defaultvalue,
+                            new: newColumn.defaultvalue
+                        });
+                    } else {
+                        difference.push({
+                            index: oldColumn.index,
+                            action: 'update',
+                            column: oldColumn,
+                            updates: [{
+                                key: 'default',
+                                old: oldColumn.defaultvalue,
+                                new: newColumn.defaultvalue
+                            }]
+                        });
+                    }
+                }
+            }
         });
 
         newColumns.forEach((newColumn) => {
