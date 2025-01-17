@@ -69,6 +69,7 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
             }
 
             $options = SchemaBuilder::parseColumnOptions($column);
+            $options['new'] = true;
             $columnType = SchemaBuilder::parseColumnType($column['type'], $column['length']);
             $schemaBuilder->addColumn($column['name'], $columnType, $options);
         }
@@ -84,6 +85,7 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
             if ($column['action'] === 'delete') {
                 $schemaAlter->dropColumn($column['column']['name']);
             } elseif ($column['action'] === 'update') {
+                $runChange = false;
                 foreach ($column['updates'] as $update) {
                     switch ($update['key']) {
                         case 'name':
@@ -95,25 +97,32 @@ class DatabaseDiscoveryRepository extends DatabaseRepository
                             break;
                         case 'type':
                             $column['column']['type'] = $update['new'];
+                            $runChange = true;
                             break;
                         case 'length':
                             $column['column']['length'] = $update['new'];
+                            $runChange = true;
                             break;
                         case 'default':
                             $column['column']['default'] = $update['new'];
+                            $runChange = true;
                             break;
-                        case 'nullable':
+                        case 'isNull':
                             $column['column']['isNull'] = $update['new'];
+                            $runChange = true;
                             break;
-                        case 'auto_increment':
+                        case 'isAutoIncrement':
                             $column['column']['isAutoIncrement'] = $update['new'];
+                            $runChange = true;
                             break;
                     }
                 }
-                $options = SchemaBuilder::parseColumnOptions($column['column']);
-                $columnType = SchemaBuilder::parseColumnType($column['column']['type'], $column['column']['length']);
-                $definition = SchemaBuilder::buildColumnDefinition($column['column']['name'], $columnType, $options);
-                $schemaAlter->changeColumnDefinition($column['column']['name'], $definition);
+                if ($runChange) {
+                    $options = SchemaBuilder::parseColumnOptions($column['column']);
+                    $columnType = SchemaBuilder::parseColumnType($column['column']['type'], $column['column']['length']);
+                    $definition = SchemaBuilder::buildColumnDefinition($column['column']['name'], $columnType, $options);
+                    $schemaAlter->changeColumnDefinition($column['column']['name'], $definition);
+                }
             } elseif ($column['action'] === 'add') {
                 $options = SchemaBuilder::parseColumnOptions($column['column']);
                 $columnType = SchemaBuilder::parseColumnType($column['column']['type'], $column['column']['length']);

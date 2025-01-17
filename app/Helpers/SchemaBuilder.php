@@ -61,7 +61,7 @@ class SchemaBuilder
     {
         $definition = "`$name` $type";
 
-        if (!empty($options['default'])) {
+        if (isset($options['default'])) {
             $default = $options['default'];
             if ($default === 'CURRENT_TIMESTAMP') {
                 $definition .= ' DEFAULT CURRENT_TIMESTAMP';
@@ -72,10 +72,15 @@ class SchemaBuilder
 
         if (isset($options['nullable']) && $options['nullable'] === false) {
             $definition .= ' NOT NULL';
+        } else {
+            $definition .= ' NULL';
         }
 
-        if (!empty($options['auto_increment']) && $options['auto_increment'] === true) {
-            $definition .= ' AUTO_INCREMENT PRIMARY KEY';
+        if (isset($options['auto_increment']) && $options['auto_increment'] === true) {
+            $definition .= ' AUTO_INCREMENT';
+            if (isset($options['new']) && $options['new'] === true) {
+                $definition .= ' PRIMARY KEY';
+            }
         }
 
         return $definition;
