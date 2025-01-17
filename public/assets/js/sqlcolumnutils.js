@@ -55,7 +55,7 @@ const columnDefaults = [
     }
 ];
 
-function columnDefaultOptions(column, columnCounter) {
+function columnDefaultOptions(tr, column, columnCounter) {
     const selectDiv = document.createElement('div');
     selectDiv.className = 'gap-2 d-flex';
     const select = document.createElement('select');
@@ -68,6 +68,15 @@ function columnDefaultOptions(column, columnCounter) {
         optionElement.text = option.name;
         select.appendChild(optionElement);
     });
+    select.addEventListener('change', () => {
+        console.log(select.value);
+        if (select.value === 'specified') {
+            const input = specifiedInput(columnCounter);
+            selectDiv.appendChild(input);
+        } else {
+            selectDiv.removeChild(selectDiv.lastChild);
+        }
+    });
 
     if (column.Default === null && column.Null === 'YES') {
         select.querySelector('option[value="NULL"]').setAttribute('selected', true);
@@ -77,18 +86,24 @@ function columnDefaultOptions(column, columnCounter) {
         select.querySelector('option[value="CURRENT_TIMESTAMP"]').setAttribute('selected', true);
     } else if (column.Default !== undefined) {
         select.querySelector(`option[value="specified"]`).setAttribute('selected', true);
-        const input = document.createElement('input');
-        input.classList.add('form-control');
-        input.setAttribute('data-column-index', columnCounter);
-        input.setAttribute('data-column-field', 'default');
-        input.setAttribute('placeholder', 'Default value');
-        input.defaultValue = column.Default;
+        const input = specifiedInput(columnCounter, column.Default);
         selectDiv.appendChild(input);
     }
     selectDiv.appendChild(select);
     // Reverse the order of the elements
     selectDiv.append(...Array.from(selectDiv.childNodes).reverse());
-    return selectDiv;
+
+    tr.querySelector('#default-' + columnCounter).appendChild(selectDiv);
+}
+
+function specifiedInput(counter, defaultInput) {
+    const input = document.createElement('input');
+    input.classList.add('form-control');
+    input.setAttribute('data-column-index', counter);
+    input.setAttribute('data-column-field', 'default');
+    input.setAttribute('placeholder', 'Default value');
+    input.defaultValue = defaultInput || '';
+    return input;
 }
 
 function addColumn(index, column, type, length) {
@@ -99,12 +114,11 @@ function addColumn(index, column, type, length) {
         <td><input type="text" class="form-control" data-column-index="${index}" data-column-field="name" placeholder="Column name" ${column.Field ? `value="${column.Field}"` : ''} /></td>
         <td><select class="form-select" data-column-index="${index}" data-column-field="type">${columnTypeOptions(type).map(element => element.outerHTML).join('')}</select></td>
         <td><input type="text" class="form-control" data-column-index="${index}" data-column-field="length" placeholder="Column length/value" ${length ? `value="${length}"` : ''} /></td>
-        <td>
-            ${columnDefaultOptions(column, index).outerHTML}
-        </td>
+        <td id="default-${index}"></td>
         <td><input type="checkbox" data-column-index="${index}" data-column-field="isNull" ${column.Null === 'YES' ? 'checked' : ''} /></td>
         <td><input type="checkbox" data-column-index="${index}" data-column-field="isAutoIncrement" ${column.Extra === 'auto_increment' ? 'checked' : ''} /></td>
     `;
+    columnDefaultOptions(tr, column, index)
     const deleteColumnButton = tr.querySelector('#deleteColumn-' + index);
     deleteColumnButton.addEventListener('click', () => {
         deleteColumnButton.parentNode.parentNode.remove();
