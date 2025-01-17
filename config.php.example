@@ -2,4 +2,10 @@
 
 return $config = [
     'APP_ENV' => 'production',
+    'PROTECTED_DATABASES' => [
+        'information_schema',
+        'mysql',
+        'performance_schema',
+        'sys'
+    ],
 ];

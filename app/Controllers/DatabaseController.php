@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Config\Config;
 use App\Enum\SuccessEnum;
 use App\Repositories\DatabaseTableRepository;
 use App\Repositories\DatabaseExportRepository;
@@ -171,6 +172,13 @@ class DatabaseController extends Controller
 
     public function delete(string $databaseName): string
     {
+        if (in_array($databaseName, Config::getKey('PROTECTED_DATABASES'))) {
+            return json_encode([
+                'type' => SuccessEnum::FAILURE,
+                'message' => 'This database is protected and cannot be deleted',
+            ]);
+        }
+
         try {
             $this->databaseDiscoveryRepository->deleteDatabase($databaseName);
 
@@ -184,7 +192,6 @@ class DatabaseController extends Controller
                 'type' => SuccessEnum::FAILURE,
                 'message' => $e->getMessage(),
             ]);
-
         }
     }
 
